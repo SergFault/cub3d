@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:51 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/06 01:10:35 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/09 13:43:03 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	render_image(t_dataset *set)
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if((set->game->map)[mapX][mapY] == '1') hit = 1;
+			if((set->game->map)[mapY][mapX] == '1') hit = 1;
 		}
 
 		//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
@@ -230,7 +230,7 @@ int	game_loop(t_dataset *set)
 	t_rend	*r;
 
 	(void) set;
-	r = set->rend;
+	movement_processor(set);
 	render_image(set);
 	if (set->game->win)
 		leave_game(set);

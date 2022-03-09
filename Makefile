@@ -32,6 +32,7 @@ SRC			=	src/main.c \
 				src/utils/leave_game.c \
 				src/utils/mem_utils.c \
 				src/utils/keyboard_processor.c \
+				src/utils/movement_processor.c \
 				src/utils/render_utils.c \
 				src/utils/draw_utils.c \
 				src/utils/ft_str_cons_only.c \

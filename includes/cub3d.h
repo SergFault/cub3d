@@ -34,8 +34,8 @@
 # define BLACK 0x00000000
 # define WHITE 0xFFFFFFFF
 # define RED 0x00FF0000
-# define MV_SPEED 0.1
-# define RT_SPEED 0.05
+# define MV_SPEED 0.01
+# define RT_SPEED 0.01
 
 
 
@@ -88,6 +88,12 @@ typedef struct s_coordinates
 	double dir_y;
 	double cam_plane_x;
 	double cam_plane_y;
+	int move_front;
+	int move_back;
+	int move_right;
+	int move_left;
+	int turn_left;
+	int turn_right;
 }				t_coordinates;
 
 typedef struct s_env
@@ -157,6 +163,9 @@ int	get_pixel(t_img *t_img, int s_x, int s_y);
 void	put_pixel(t_img *data, int x, int y, unsigned int color);
 int	ft_str_cons_only(char *str, char ch);
 int	check_map_content(t_list *map);
+int	process_key_pressed(int key, t_dataset *set);
+void movement_processor(t_dataset *set);
+int process_key_released(int key, t_dataset *set);
 
 
 

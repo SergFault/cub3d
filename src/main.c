@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "mlx.h"
 #include "cub3d.h"
 
@@ -63,6 +64,11 @@ static int	init(t_dataset *set, char **argv)
 	return (1);
 }
 
+int prt()
+{
+	printf("prnt\n");
+}
+
 int		main(int argc, char **argv)
 {
 	t_rend		rend;
@@ -81,8 +87,9 @@ int		main(int argc, char **argv)
 		set.game = &game;
 		set.rend = &rend;
 		init(&set, argv);
-		mlx_hook(rend.win, 33, 1L << 17, leave_game, &set);
-		mlx_key_hook(rend.win, process_key, &set);
+		mlx_hook(rend.win, 2, (1L << 0), process_key_pressed, &set);
+		mlx_hook(set.rend->win, 3, (1L << 1), process_key_released, &set);
+		mlx_hook(set.rend->win, 33, 0, &leave_game, &set);
 		mlx_loop_hook(rend.mlx, game_loop, &set);
 		mlx_loop(rend.mlx);
 	}
