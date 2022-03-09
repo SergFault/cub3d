@@ -22,7 +22,7 @@
 # define ARGS_ERROR "Error\nNumber of arguments is incorrect.\n"
 
 
-#define WALL_PATH "./textures/redbrick1.xpm"
+#define WALL_PATH "./textures/redbrick.xpm"
 
 
 # define ESC 65307
@@ -36,6 +36,11 @@
 # define RED 0x00FF0000
 # define MV_SPEED 0.01
 # define RT_SPEED 0.01
+# define NORTH_SIDE 1
+# define SOUTH_SIDE 2
+# define WEST_SIDE 3
+# define EAST_SIDE 4
+# define WALL_GAP 0.1
 
 
 
@@ -77,7 +82,10 @@ typedef struct s_rend
 	void	*mlx;
 	void	*win;
 	t_img	main_img;
-	t_img	wall;
+	t_img	east;
+	t_img	west;
+	t_img	north;
+	t_img	south;
 }				t_rend;
 
 typedef struct s_coordinates

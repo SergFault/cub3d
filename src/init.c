@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:27 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/09 13:41:41 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:19:23 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void init_data(t_dataset *set)
 {
 	set->rend->mlx = NULL;
 	set->rend->win = NULL;
-	set_img_null(&set->rend->wall);
+	set_img_null(&set->rend->east);
 	set->game->map_width = 0;
 	set->game->map_height = 0;
 	set->game->map = NULL;
@@ -43,8 +43,8 @@ void game_init(t_game *game)
 	game->hero_pos.turn_left = 0;
 	game->hero_pos.turn_right = 0;
 
-	game->hero_pos.x = 1.0;
-	game->hero_pos.y = 1.0;
+	game->hero_pos.x = 20.0;
+	game->hero_pos.y = 3.0;
 	game->hero_pos.dir_x = -1.0;
 	game->hero_pos.dir_y = 0.0;
 	game->hero_pos.cam_plane_x = 0.0;

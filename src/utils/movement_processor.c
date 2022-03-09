@@ -2,10 +2,27 @@
 #include <stdio.h>
 #include "cub3d.h"
 
+int check_x_coordinate(t_dataset *set, double coordinate)
+{
+
+	if (set->game->map[(int)set->game->hero_pos.y][(int)(coordinate)] == '0')
+		return (1);
+	return (0);
+}
+
+int check_y_coordinate(t_dataset *set, double coordinate)
+{
+	if (set->game->map[(int)(coordinate)][(int)set->game->hero_pos.x] == '0')
+		return (1);
+	return (0);
+}
+
 void movement_processor(t_dataset *set)
 {
 	double *pos_x;
 	double *pos_y;
+	double pos_x_check;
+	double pos_y_check;
 	double *dir_x;
 	double *dir_y;
 	double *plane_x;
@@ -20,13 +37,39 @@ void movement_processor(t_dataset *set)
 
 	if (set->game->hero_pos.move_front)
 	{
-		*pos_x += *dir_x * MV_SPEED;
-		*pos_y += *dir_y * MV_SPEED;
+		pos_x_check = *pos_x + *dir_x * MV_SPEED;
+		pos_y_check = *pos_y + *dir_y * MV_SPEED;
+		if (check_x_coordinate(set, pos_x_check))
+			*pos_x = pos_x_check;
+		if (check_y_coordinate(set, pos_y_check))
+			*pos_y = pos_y_check;
 	}
 	if (set->game->hero_pos.move_back)
 	{
-		*pos_x -= *dir_x * MV_SPEED;
-		*pos_y -= *dir_y * MV_SPEED;
+		pos_x_check = *pos_x - *dir_x * MV_SPEED;
+		pos_y_check = *pos_y - *dir_y * MV_SPEED;
+		if (check_x_coordinate(set, pos_x_check))
+			*pos_x = pos_x_check;
+		if (check_y_coordinate(set, pos_y_check))
+			*pos_y = pos_y_check;
+	}
+	if (set->game->hero_pos.move_left)
+	{
+		pos_x_check = *pos_x + (*dir_x * cos(-M_PI_2) - *dir_y * sin(-M_PI_2))  * MV_SPEED;
+		pos_y_check = *pos_y + (*dir_x * sin(-M_PI_2) + *dir_y * cos(-M_PI_2)) * MV_SPEED;
+		if (check_x_coordinate(set, pos_x_check))
+			*pos_x = pos_x_check;
+		if (check_y_coordinate(set, pos_y_check))
+			*pos_y = pos_y_check;
+	}
+	if (set->game->hero_pos.move_right)
+	{
+		pos_x_check = *pos_x + (*dir_x * cos(M_PI_2) - *dir_y * sin(M_PI_2))  * MV_SPEED;
+		pos_y_check = *pos_y + (*dir_x * sin(M_PI_2) + *dir_y * cos(M_PI_2)) * MV_SPEED;
+		if (check_x_coordinate(set, pos_x_check))
+			*pos_x = pos_x_check;
+		if (check_y_coordinate(set, pos_y_check))
+			*pos_y = pos_y_check;
 	}
 	if (set->game->hero_pos.turn_left)
 	{
