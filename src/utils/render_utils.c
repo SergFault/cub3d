@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <bits/stdint-uintn.h>
+//#include <bits/stdint-uintn.h>
 #include "cub3d.h"
 #include "mlx.h"
 #include <sys/time.h>
 
 
-t_img	*get_img(t_rend *rend, char ch)
-{
-	if (ch == WALL_CH)
-		return (&rend->wall);
-	return (&rend->wall);
-}
+//t_img	*get_img(t_rend *rend, char ch)
+//{
+//	if (ch == WALL_CH)
+//		return (&rend->wall);
+//	return (&rend->wall);
+//}
 
 static int	render_image(t_dataset *set)
 {
@@ -152,24 +152,39 @@ static int	render_image(t_dataset *set)
 
 			for(int y = 0; y < screen_height; y++)
 			{
+
 				if (y >= drawStart && y <= drawEnd)
 				{
 					// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 					int texY = (int) texPos & (texHeight - 1);
 					texPos += step;
-					uint32_t color = get_pixel(&set->rend->wall, texX, texY);
+					uint32_t color = get_pixel(&set->rend->wall[set->rend->i], texX,
+						texY);
 					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-					if (side == 1) color = (color >> 1) & 8355711;
+					////if (side == 1) color = (color >> 1) & 8355711;
+//					if (y > screen_height / 2)
+//						put_pixel(&set->rend->main_img, x, y, 0x00009900);
+//					else
+//						put_pixel(&set->rend->main_img, x, y, 0x009999FF);
 					put_pixel(&set->rend->main_img, x, y, color);
-				} else
+				}
+				else
 				{
-					put_pixel(&set->rend->main_img, x, y, BLACK);
+					if (y > screen_height / 2)
+							put_pixel(&set->rend->main_img, x, y, 0x00009900);
+					else
+							put_pixel(&set->rend->main_img, x, y, 0x009999FF);
 				}
 			}
 	}
 
 
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
+	set->rend->i++;
+	if (set->rend->i == 10)
+		set->rend->i = 0;
+	usleep(10000);
+
 
 //	//timing for input and FPS counter
 //	oldTime = time;

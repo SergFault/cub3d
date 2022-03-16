@@ -1,10 +1,10 @@
 #ifndef _CUB3D_H_
 #define _CUB3D_H_
 
-#define screen_width 640
-#define screen_height 480
-#define texWidth 64
-#define texHeight 64
+#define screen_width 1280
+#define screen_height 640
+#define texWidth 128
+#define texHeight 128
 #define mapWidth 24
 #define mapHeight 24
 #define BUFFER_SIZE 40
@@ -22,20 +22,20 @@
 # define ARGS_ERROR "Error\nNumber of arguments is incorrect.\n"
 
 
-#define WALL_PATH "./textures/redbrick1.xpm"
+#define WALL_PATH "./textures/0.png"//"./textures/redbrick1.xpm"
 
 
-# define ESC 65307
-# define LEFT 97
-# define UP 119
-# define RIGHT 100
-# define DOWN 115
+# define ESC 53//65307
+# define LEFT 0//97
+# define UP 13//119
+# define RIGHT 2//100
+# define DOWN 1//115
 # define TRANSPARENCY 0xFF000000
 # define BLACK 0x00000000
-# define WHITE 0xFFFFFFFF
+# define WHITE 0x00FFFFFF
 # define RED 0x00FF0000
-# define MV_SPEED 0.01
-# define RT_SPEED 0.01
+# define MV_SPEED 0.1
+# define RT_SPEED 0.05
 
 
 
@@ -77,7 +77,8 @@ typedef struct s_rend
 	void	*mlx;
 	void	*win;
 	t_img	main_img;
-	t_img	wall;
+	int		i;
+	t_img	wall[10];
 }				t_rend;
 
 typedef struct s_coordinates

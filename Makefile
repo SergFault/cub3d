@@ -5,8 +5,8 @@ CC			=	clang
 FLAGS		=	-g #-Wall -Wextra -Werror -std=c99  #-fsanitize=leak \
 -fsanitize=address
 LIB_BIN		=	mlx-linux/libmlx_Linux.a
-MLX_DIR		=	mlx-linux
-LIB			=	-L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz -lm
+MLX_DIR		=	minilibx_mms_20200219
+LIB			=	-L. -lmlx -framework OpenGL -framework AppKit
 INCLUDES	=	includes/
 HEADER		=	includes/cub3d.h
 SRC			=	src/main.c \
@@ -40,12 +40,12 @@ SRC			=	src/main.c \
 
 OBJS		= 	${SRC:.c=.o}
 
-%.o:		%.c Makefile
+%.o:		%.c Makefile $(HEADER)
 			$(CC) $(FLAGS) -I$(INCLUDES) -c $< -o $@
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) $(LIB_BIN)
+$(NAME):	$(OBJS) #$(LIB_BIN)
 			$(CC) $(FLAGS) -o $@ $^ $(LIB)
 
 $(LIB_BIN):
