@@ -11,18 +11,17 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <bits/stdint-uintn.h>
+//#include <bits/stdint-uintn.h>
 #include "cub3d.h"
 #include "mlx.h"
 #include <sys/time.h>
 
-
-t_img	*get_img(t_rend *rend, char ch)
-{
-	if (ch == WALL_CH)
-		return (&rend->east);
-	return (&rend->east);
-}
+//t_img	*get_img(t_rend *rend, char ch)
+//{
+//	if (ch == WALL_CH)
+//		return (&rend->wall);
+//	return (&rend->wall);
+//}
 
 static int	render_image(t_dataset *set)
 {
@@ -170,13 +169,19 @@ static int	render_image(t_dataset *set)
 
 			for(int y = 0; y < screen_height; y++)
 			{
+
 				if (y >= drawStart && y <= drawEnd)
 				{
 					// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 					int texY = (int) texPos & (texHeight - 1);
 					texPos += step;
-					uint32_t color = get_pixel(img, texX, texY);
-					put_pixel(&set->rend->main_img, x, y, color);
+//					uint32_t color = get_pixel(img, texX, texY);
+
+					uint32_t color = get_pixel(img, texX,
+						texY);
+					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+					if (side == 1) color = (color >> 1) & 8355711;
+						put_pixel(&set->rend->main_img, x, y, color);
 				}
 				else
 				{
@@ -188,6 +193,63 @@ static int	render_image(t_dataset *set)
 			}
 	}
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
+//	set->rend->i++;
+	if (set->rend->i == 10)
+		set->rend->i = 0;
+	usleep(1000);
+
+
+//	//timing for input and FPS counter
+//	oldTime = time;
+//	time = getTicks();
+//	double frameTime = (time - oldTime) / 1000.0; //frametime is the time this frame has taken, in seconds
+//	print(1.0 / frameTime); //FPS counter
+//	redraw();
+
+	//speed modifiers
+//	double moveSpeed = 100 * 5.0; //the constant value is in squares/second
+//	double rotSpeed = 100 * 3.0; //the constant value is in radians/second
+//
+//	readKeys();
+//	//move forward if no wall in front of you
+//	if(keyDown(SDLK_UP))
+//	{
+//		if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+//		if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
+//	}
+//	//move backwards if no wall behind you
+//	if(keyDown(SDLK_DOWN))
+//	{
+//		if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+//		if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+//	}
+//	//rotate to the right
+//	if(keyDown(SDLK_RIGHT))
+//	{
+//		//both camera direction and camera plane must be rotated
+//		double oldDirX = dirX;
+//		dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+//		dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+//		double oldPlaneX = planeX;
+//		planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+//		planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+//	}
+//	//rotate to the left
+//	if(keyDown(SDLK_LEFT))
+//	{		return (&rend->wall);
+
+//		//both camera direction and camera plane must be rotated
+//		double oldDirX = dirX;
+//		dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+//		dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+//		double oldPlaneX = planeX;
+//		planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+//		planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+//	}
+//	if(keyDown(SDLK_ESCAPE))
+//	{
+//		break;
+//	}
 	return (1);
 }
 
