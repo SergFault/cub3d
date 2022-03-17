@@ -35,7 +35,7 @@ void init_data(t_dataset *set)
 {
 	set->rend->mlx = NULL;
 	set->rend->win = NULL;
-<<<<<<< HEAD:src/initialize/init.c
+//<<<<<<< HEAD:src/initialize/init.c
 	set->path_north = NULL;
 	set->path_west = NULL;
 	set->path_south = NULL;
@@ -45,10 +45,10 @@ void init_data(t_dataset *set)
 	set_img_null(&set->rend->north);
 	set_img_null(&set->rend->south);
 	set_img_null(&set->rend->main_img);
-=======
-	set_img_null(set->rend->wall);
+//=======
+//	set_img_null(set->rend->wall);
 	set->rend->i = 0;
->>>>>>> mac_madness:src/init.c
+//>>>>>>> mac_madness:src/init.c
 	set->game->map_width = 0;
 	set->game->map_height = 0;
 	set->game->map = NULL;
@@ -56,22 +56,22 @@ void init_data(t_dataset *set)
 
 void game_init(t_game *game)
 {
-<<<<<<< HEAD:src/initialize/init.c
+//<<<<<<< HEAD:src/initialize/init.c
 	game->hero_pos = get_pos(game);
-=======
-	game->hero_pos.move_front = 0;
-	game->hero_pos.move_back = 0;
-	game->hero_pos.move_right = 0;
-	game->hero_pos.move_left = 0;
-	game->hero_pos.turn_left = 0;
-	game->hero_pos.turn_right = 0;
-
-	game->hero_pos.x = 5.0;
-	game->hero_pos.y = 5.0;
-	game->hero_pos.dir_x = -1.0;
-	game->hero_pos.dir_y = 0.0;
-	game->hero_pos.cam_plane_x = 0.0;
-	game->hero_pos.cam_plane_y = -1.0;
-	game->win = 0;
->>>>>>> mac_madness:src/init.c
+//=======
+//	game->hero_pos.move_front = 0;
+//	game->hero_pos.move_back = 0;
+//	game->hero_pos.move_right = 0;
+//	game->hero_pos.move_left = 0;
+//	game->hero_pos.turn_left = 0;
+//	game->hero_pos.turn_right = 0;
+//
+//	game->hero_pos.x = 5.0;
+//	game->hero_pos.y = 5.0;
+//	game->hero_pos.dir_x = -1.0;
+//	game->hero_pos.dir_y = 0.0;
+//	game->hero_pos.cam_plane_x = 0.0;
+//	game->hero_pos.cam_plane_y = -1.0;
+//	game->win = 0;
+//>>>>>>> mac_madness:src/init.c
 }

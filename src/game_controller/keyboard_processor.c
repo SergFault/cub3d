@@ -28,11 +28,11 @@ int process_key_pressed(int key, t_dataset *set)
 	{
 		set->game->hero_pos.move_back = 1;
 	}
-	if (key == 65361)
+	if (key == 123)
 	{
 		set->game->hero_pos.turn_left = 1;
 	}
-	if (key == 65363)
+	if (key == 124)
 	{
 		set->game->hero_pos.turn_right = 1;
 	}
@@ -60,9 +60,9 @@ int process_key_released(int key, t_dataset *set)
 	{
 		set->game->hero_pos.move_back = 0;
 	}
-	if (key == 65361)
+	if (key == 123)
 		set->game->hero_pos.turn_left = 0;
-	if (key == 65363)
+	if (key == 124)
 	{
 		set->game->hero_pos.turn_right = 0;
 	}

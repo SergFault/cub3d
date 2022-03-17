@@ -6,7 +6,7 @@
 static int	init_model(void *mlx, t_img img[10], char *path)
 {
 //<<<<<<< HEAD
-	img->img = mlx_xpm_file_to_image(mlx, path, &(img->width),
+	img->img = mlx_png_file_to_image(mlx, path, &(img->width),
 									 & (img->height));
 	if (!img->img)
 		return ((int) ft_error_null(TEXTURES_INIT_ERROR));

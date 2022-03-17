@@ -180,9 +180,8 @@ static int	render_image(t_dataset *set)
 					uint32_t color = get_pixel(img, texX,
 						texY);
 					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-					if (side == 1) color = (color >> 1) & 8355711;
-						put_pixel(&set->rend->main_img, x, y, color);
-				}
+//					if (side == 1) color = (color >> 1) & 8355711;
+						put_pixel(&set->rend->main_img, x, y, color);}
 				else
 				{
 					if (y >= screen_height / 2)
