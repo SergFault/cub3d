@@ -2,3 +2,4 @@ deps.mk
 cub3d
 /.idea
 *.o
+valgrind-out.txt

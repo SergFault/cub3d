@@ -8,22 +8,24 @@
 #define mapWidth 24
 #define mapHeight 24
 #define BUFFER_SIZE 40
-# define VALID_CHARS "01NSEW"
+# define VALID_CHARS "01NSEW "
 
 
 # define WALL_CH '1'
+# define SPACE_CH ' '
 
 
 # define MEM_ERR "Error\nMemory allocation error.\n"
 # define MAP_EXT_ERR "Error\nWrong file extension.\n"
 # define BAD_FD "Error\nBad file descriptor error.\n"
 # define MAP_VALID_ERR "Error\nMap validation error.\n"
+# define META_VALID_ERR "Error\nMeta file validation error.\n"
 # define BAD_FILE "Error\nFile read error.\n"
 # define ARGS_ERROR "Error\nNumber of arguments is incorrect.\n"
-
+# define TEXTURES_META_ERROR "Error\nInvalid textures path format.\n"
+# define TEXTURES_INIT_ERROR "Error\nInvalid textures file or doesn`t exits.\n"
 
 #define WALL_PATH "./textures/redbrick.xpm"
-
 
 # define ESC 65307
 # define LEFT 97
@@ -36,22 +38,21 @@
 # define RED 0x00FF0000
 # define MV_SPEED 0.01
 # define RT_SPEED 0.01
-# define NORTH_SIDE 1
-# define SOUTH_SIDE 2
-# define WEST_SIDE 3
-# define EAST_SIDE 4
+# define NORTH_SIDE 0
+# define SOUTH_SIDE 1
+# define WEST_SIDE 2
+# define EAST_SIDE 3
 # define WALL_GAP 0.1
+# define HAVE_CEIL 0
+# define HAVE_FLOOR 1
+# define YES 1
+# define NO 0
 
-
-
-#include <math.h>
 #include <stddef.h>
+#include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-
-
-
 
 typedef struct s_list
 {
@@ -62,8 +63,6 @@ typedef struct s_list
 
 typedef struct s_objs_number
 {
-	int	collectable;
-	int	exit;
 	int	player;
 }				t_objs_number;
 
@@ -113,7 +112,6 @@ typedef struct s_game{
 	t_coordinates	hero_pos;
 	int				map_width;
 	int				map_height;
-	int				win;
 	char			**map;
 
 }				t_game;
@@ -134,6 +132,12 @@ typedef struct s_draw_data
 typedef struct s_dataset{
 	t_rend	*rend;
 	t_game	*game;
+	char	*path_east;
+	char	*path_west;
+	char	*path_north;
+	char	*path_south;
+	int		floor_rgb[3];
+	int		ceiling_rgb[3];
 }				t_dataset;
 
 /* utils */
@@ -145,7 +149,7 @@ size_t	ft_strlen(const char *s);
 int	ft_sj_ff_dt(const char *s1, const char *s2, char **dest);
 int	ft_strdup_free(const char *s1, char **dest);
 static int	read_fd(char **line, char *buffer[], char **cache, int fd);
-int	map_init(t_game *game, char **argv);
+int	map_init(t_dataset *set, char *argv);
 void	ft_lst_del_str(void *str);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void*));
@@ -160,20 +164,38 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strdup(const char *s);
 void	*ft_error_null(char *message);
 void	free_str_array(char **str_arr, int index);
-int	validate_map(t_list *map);
+int	validate_map(char **map, t_game *game);
 int	get_next_line(int fd, char **line);
 void	free_data(t_dataset *set);
-int	free_map(char **map, int index);
+int	free_map(char **map);
 int	leave_game(t_dataset *set);
 int	process_key(int key, t_dataset *set);
 int	game_loop(t_dataset *set);
 int	get_pixel(t_img *t_img, int s_x, int s_y);
 void	put_pixel(t_img *data, int x, int y, unsigned int color);
 int	ft_str_cons_only(char *str, char ch);
-int	check_map_content(t_list *map);
+int	check_map_content(char **map);
 int	process_key_pressed(int key, t_dataset *set);
 void movement_processor(t_dataset *set);
 int process_key_released(int key, t_dataset *set);
+t_list	*lines_list(t_list *lines, char *path);
+int validate_lines(t_list *str_lines, t_dataset *set);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int ft_no_spaces(char *str);
+void arr_to_zero(int *arr, int size);
+int check_n_skip_textures(t_list **list, t_dataset *set);
+int ft_is_digit(char ch);
+int check_n_skip_colors(t_list **list, t_dataset *set);
+int	ft_str_cons_only_chars(char *str, char *str_ch);
+int	ft_is_space(char ch);
+int check_n_skip_map(t_list **line_lst, t_dataset *set);
+int	ft_atoi(const char *str);
+void	set_rgb_arr(const int *src, int *dst);
+char	**str_lines_to_arr(t_list *lines, t_game *game);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_dup_spaces(size_t size);
+void	free_textures_paths(t_dataset *set);
+t_coordinates	get_pos(t_game *game);
 
 
 

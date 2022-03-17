@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:08 by sergey            #+#    #+#             */
-/*   Updated: 2021/09/29 17:27:08 by sergey           ###   ########.fr       */
+/*   Updated: 2022/03/17 15:17:09 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,37 +61,43 @@ static int	check_chars(t_list *map)
 	return (1);
 }
 
-static int	check_walls(t_list *map)
+static int have_bad_neighbor(char  **map, int y, int x, t_game *game)
 {
+	if (y <= 0 || x <= 0 || y >= game->map_height - 1 || x >= game->map_width - 1)
+		return (1);
+	if (map[y - 1][x] == SPACE_CH || map[y + 1][x]  == SPACE_CH
+		|| map[y][x - 1] == SPACE_CH || map[y][x + 1] == SPACE_CH)
+		return (1);
+	return (0);
+}
+
+static int	check_walls(char  **map, t_game *game)
+{
+	int 	i;
+	int		j;
 	char	*line;
 
-	line = (char *)map->content;
-	if (!(ft_str_cons_only(line, WALL_CH)))
-		return (0);
-	map = map->next;
-	while (map->next)
+	i = 0;
+	j = 0;
+
+	while (map[i])
 	{
-		line = (char *)map->content;
-		if (*(line++) != WALL_CH)
-			return (0);
-		while (*line)
+		while (map [i][j])
 		{
-			if (*(line) != WALL_CH && (*(line + 1) == '\0'))
-				return (0);
-			line++;
+			if (map[i][j] != WALL_CH && map[i][j] != SPACE_CH)
+				if (have_bad_neighbor(map, i, j, game))
+					return (0);
+			j++;
 		}
-		map = map->next;
+		j = 0;
+		i++;
 	}
-	line = (char *)map->content;
-	if (!(ft_str_cons_only(line, WALL_CH)))
-		return (0);
 	return (1);
 }
 
-int	validate_map(t_list *map)
+int	validate_map(char  **map, t_game *game)
 {
-	if (!(check_chars(map)) || !(check_rect(map)) || !(check_map_content(map))
-		||!(check_walls(map)))
+	if (!(check_map_content(map)) || !(check_walls(map, game)))
 		return (0);
 	return (1);
 }

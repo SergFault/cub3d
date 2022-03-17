@@ -6,11 +6,19 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:42 by sergey            #+#    #+#             */
-/*   Updated: 2021/09/29 17:27:42 by sergey           ###   ########.fr       */
+/*   Updated: 2022/03/17 19:41:30 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_textures_paths(t_dataset *set)
+{
+	free(set->path_east);
+	free(set->path_west);
+	free(set->path_north);
+	free(set->path_south);
+}
 
 void	free_data(t_dataset *set)
 {
@@ -25,19 +33,14 @@ void	free_data(t_dataset *set)
 	set->game->map = NULL;
 }
 
-void	free_env_obj(void *obj)
-{
-	free(obj);
-}
-
-int	free_map(char **map, int index)
+int	free_map(char **map)
 {
 	int	c;
 
 	c = 0;
 	if (!map)
 		return (0);
-	while (c < index)
+	while (map[c])
 	{
 		free(map[c]);
 		c++;

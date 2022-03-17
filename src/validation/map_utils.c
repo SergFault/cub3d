@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:40 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/05 16:58:28 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/17 20:26:12 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,34 +51,35 @@ static void	count_lines_and_chars(t_list *lines, t_game *game)
 	}
 }
 
-static char	**str_lines_to_arr(t_list *lines, t_game *game)
+char	**str_lines_to_arr(t_list *lines, t_game *game)
 {
 	char	**str_arr;
-	int		tmp;
+	int		i;
 	t_list	*start;
 
 	start = lines;
 	count_lines_and_chars(lines, game);
-	str_arr = (char **) malloc((sizeof (char *)) * game->map_height);
+	str_arr = (char **) malloc((sizeof (char *)) * (game->map_height + 1));
 	if (str_arr == NULL)
-		ft_error_null(MEM_ERR);
-	tmp = 0;
+		return (ft_error_null(MEM_ERR));
+	i = 0;
 	lines = start;
 	while (lines)
 	{
-		str_arr[tmp] = ft_strdup(lines->content);
-		if (!(str_arr[tmp++]))
+		str_arr[i] = ft_strdup((char *)lines->content);
+		if (!(str_arr[i++]))
 		{
-			free_str_array(str_arr, --tmp);
+			free_str_array(str_arr, --i);
 			free(str_arr);
 			return (ft_error_null(MEM_ERR));
 		}
 		lines = lines->next;
 	}
+	str_arr[i] = NULL;
 	return (str_arr);
 }
 
-static t_list	*lines_list(t_list *lines, char *path)
+t_list	*lines_list(t_list *lines, char *path)
 {
 	int	fd;
 
@@ -94,27 +95,33 @@ static t_list	*lines_list(t_list *lines, char *path)
 	return (lines);
 }
 
-int	map_init(t_game *game, char **argv)
+int	map_init(t_dataset *set, char *argv)
 {
 	t_list	*lines;
 
 	lines = NULL;
-	if (!(check_extension(argv[1])))
+	if (!(check_extension(argv)))
 	{
 		ft_putstr_fd(MAP_EXT_ERR, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	lines = lines_list(lines, argv[1]);
-	if (!(validate_map(lines)))
+	lines = lines_list(lines, argv);
+	if (!validate_lines(lines, set))
+	{
+		ft_lstclear(&lines, ft_lst_del_str);
+		ft_putstr_fd(META_VALID_ERR, STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	if (!(validate_map(set->game->map, set->game)))
 	{
 		ft_lstclear(&lines, ft_lst_del_str);
 		ft_putstr_fd(MAP_VALID_ERR, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	game->map = str_lines_to_arr(lines, game);
 	ft_lstclear(&lines, ft_lst_del_str);
-	if (!(game->map))
+	if (!(set->game->map))
 	{
+		free_textures_paths(set);
 		ft_putstr_fd(MAP_VALID_ERR, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:51 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/09 19:38:19 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/09 20:00:40 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	render_image(t_dataset *set)
 
 		while (hit == 0)
 		{
-			if (rayDirY > 0)
+			if (rayDirY < 0)
 				y_texture = NORTH_SIDE;
 			else
 				y_texture = SOUTH_SIDE;
@@ -165,7 +165,7 @@ static int	render_image(t_dataset *set)
 			img = &set->rend->west;
 		else if (side == EAST_SIDE)
 			img = &set->rend->east;
-		else if (side == SOUTH_SIDE)
+		else
 			img = &set->rend->south;
 
 			for(int y = 0; y < screen_height; y++)
@@ -195,7 +195,7 @@ int	game_loop(t_dataset *set)
 	(void) set;
 	movement_processor(set);
 	render_image(set);
-	if (set->game->win)
-		leave_game(set);
+//	if (set->game->win)
+//		leave_game(set);
 	return (1);
 }
