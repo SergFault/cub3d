@@ -30,6 +30,14 @@ int	get_pixel(t_img *t_img, int s_x, int s_y)
 			 * (t_img->bpp / 8))));
 }
 
+unsigned int	convert_rgb(const unsigned char rgb[3])
+{
+	unsigned int	color;
+
+	color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
+	return (color);
+}
+
 //void	img_on_img(t_img *img, t_img *s_img, int startX, int startY)
 //{
 //	t_draw_data	draw;

@@ -180,7 +180,10 @@ static int	render_image(t_dataset *set)
 				}
 				else
 				{
-					put_pixel(&set->rend->main_img, x, y, BLACK);
+					if (y >= screen_height / 2)
+						put_pixel(&set->rend->main_img, x, y, set->floor_color);
+					else
+						put_pixel(&set->rend->main_img, x, y, set->ceiling_color);
 				}
 			}
 	}

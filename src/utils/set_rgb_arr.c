@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	set_rgb_arr(const int *src, int *dst)
+void	set_rgb_arr(const int *src, unsigned char dst[3])
 {
 	dst[0] = src[0];
 	dst[1] = src[1];

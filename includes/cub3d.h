@@ -136,8 +136,10 @@ typedef struct s_dataset{
 	char	*path_west;
 	char	*path_north;
 	char	*path_south;
-	int		floor_rgb[3];
-	int		ceiling_rgb[3];
+	unsigned char	floor_rgb[3];
+	unsigned char	ceiling_rgb[3];
+	unsigned int	floor_color;
+	unsigned int	ceiling_color;
 }				t_dataset;
 
 /* utils */
@@ -190,12 +192,13 @@ int	ft_str_cons_only_chars(char *str, char *str_ch);
 int	ft_is_space(char ch);
 int check_n_skip_map(t_list **line_lst, t_dataset *set);
 int	ft_atoi(const char *str);
-void	set_rgb_arr(const int *src, int *dst);
+void	set_rgb_arr(const int *src, unsigned char dst[3]);
 char	**str_lines_to_arr(t_list *lines, t_game *game);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_dup_spaces(size_t size);
 void	free_textures_paths(t_dataset *set);
 t_coordinates	get_pos(t_game *game);
+unsigned int	convert_rgb(const unsigned char rgb[3]);
 
 
 

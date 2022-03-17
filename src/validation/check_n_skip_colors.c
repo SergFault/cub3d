@@ -70,6 +70,7 @@ int ft_is_color_data(t_list *line, int have_color[2], t_dataset *set)
 		parse_colors(line_str + 2, rgb);
 		have_color[HAVE_FLOOR] = YES;
 		set_rgb_arr(rgb, set->floor_rgb);
+		set->floor_color = convert_rgb(set->floor_rgb);
 		return (1);
 	}
 	else if (ft_strncmp(line_str, "C ", 2) == 0)
@@ -77,6 +78,7 @@ int ft_is_color_data(t_list *line, int have_color[2], t_dataset *set)
 		parse_colors(line_str + 2, rgb);
 		have_color[HAVE_CEIL] = YES;
 		set_rgb_arr(rgb, set->ceiling_rgb);
+		set->ceiling_color = convert_rgb(set->ceiling_rgb);
 		return (1);
 	}
 	return (0);
