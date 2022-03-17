@@ -161,7 +161,7 @@ static int	render_image(t_dataset *set)
 					uint32_t color = get_pixel(&set->rend->wall[set->rend->i], texX,
 						texY);
 					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-					////if (side == 1) color = (color >> 1) & 8355711;
+					if (side == 1) color = (color >> 1) & 8355711;
 //					if (y > screen_height / 2)
 //						put_pixel(&set->rend->main_img, x, y, 0x00009900);
 //					else
@@ -171,19 +171,21 @@ static int	render_image(t_dataset *set)
 				else
 				{
 					if (y > screen_height / 2)
-							put_pixel(&set->rend->main_img, x, y, 0x00009900);
+							put_pixel(&set->rend->main_img, x, y, convert_rgb(22,
+								25,22));
 					else
-							put_pixel(&set->rend->main_img, x, y, 0x009999FF);
+							put_pixel(&set->rend->main_img, x, y, convert_rgb(88, 88,
+								88));
 				}
 			}
 	}
 
 
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
-	set->rend->i++;
+//	set->rend->i++;
 	if (set->rend->i == 10)
 		set->rend->i = 0;
-	usleep(10000);
+	usleep(1000);
 
 
 //	//timing for input and FPS counter

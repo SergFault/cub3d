@@ -3,8 +3,8 @@
 
 #define screen_width 1280
 #define screen_height 640
-#define texWidth 128
-#define texHeight 128
+#define texWidth 1024
+#define texHeight 1024
 #define mapWidth 24
 #define mapHeight 24
 #define BUFFER_SIZE 40
@@ -167,6 +167,7 @@ int	check_map_content(t_list *map);
 int	process_key_pressed(int key, t_dataset *set);
 void movement_processor(t_dataset *set);
 int process_key_released(int key, t_dataset *set);
+unsigned int	convert_rgb(unsigned char r, unsigned char g, unsigned char b);
 
 
 

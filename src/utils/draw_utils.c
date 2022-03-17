@@ -11,6 +11,15 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
+
+unsigned int	convert_rgb(unsigned char r, unsigned char g, unsigned char b)
+{
+	unsigned int	color;
+
+	color = (r << 16) | (g << 8) | b;
+	return (color);
+}
 
 void	put_pixel(t_img *data, int x, int y, unsigned int color)
 {
