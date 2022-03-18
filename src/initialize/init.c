@@ -33,6 +33,8 @@ void set_img_null(t_img img[10])
 
 void init_data(t_dataset *set)
 {
+	int	i;
+
 	set->rend->mlx = NULL;
 	set->rend->win = NULL;
 //<<<<<<< HEAD:src/initialize/init.c
@@ -45,6 +47,12 @@ void init_data(t_dataset *set)
 	set_img_null(&set->rend->north);
 	set_img_null(&set->rend->south);
 	set_img_null(&set->rend->main_img);
+	i = 0;
+	while (i < 256)
+	{
+		set->k[i] = tan((double)(i * (screen_height / 256)) / 650);
+		i++;
+	}
 //=======
 //	set_img_null(set->rend->wall);
 	set->rend->i = 0;

@@ -16,7 +16,7 @@
 int process_key_pressed(int key, t_dataset *set)
 {
 	(void) set;
-	printf("%d\n", key);
+	//printf("%d\n", key);
 
 	if (key == ESC)
 		leave_game(set);
@@ -68,7 +68,7 @@ int process_key_released(int key, t_dataset *set)
 	}
 	if (key == RIGHT)
 	{
-		printf("move_left\n");
+		//printf("move_left\n");
 		set->game->hero_pos.move_right = 0;
 	}
 	if (key == LEFT)

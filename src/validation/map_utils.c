@@ -12,6 +12,23 @@
 
 #include "cub3d.h"
 
+void get_minimap_size(char **map, t_rend *rend)
+{
+	int	max_length;
+	int	size;
+
+	max_length = 0;
+	size = 0;
+	while (map[size])
+	{
+		if (ft_strlen(map[size]) > max_length)
+			max_length = ft_strlen(map[size]);
+		size++;
+	}
+	rend->minimap_x = max_length * 2;
+	rend->minimap_y = size * 2;
+}
+
 static int	gnl_map(int fd, t_list **lines)
 {
 	int		read_flag;

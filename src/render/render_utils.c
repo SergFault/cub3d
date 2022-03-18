@@ -23,6 +23,26 @@
 //	return (&rend->wall);
 //}
 
+unsigned int	shadows(unsigned int color, double y)//, double k[256])
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+	double			intensity;
+
+	r = (color & 0x00FF0000) >> 16;
+	g = (color & 0x0000FF00) >> 8;
+	b = color & 0x000000FF;
+	intensity = 1 / y * 2;
+	if (intensity > 1.0)
+		intensity = 1.0;
+	r = r * intensity;
+	g = g * intensity;
+	b = b * intensity;
+	color = (r << 16) | (g << 8) | b;
+	return (color);
+}
+
 static int	render_image(t_dataset *set)
 {
 	/* player`s position vector*/
@@ -181,21 +201,44 @@ static int	render_image(t_dataset *set)
 						texY);
 					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 //					if (side == 1) color = (color >> 1) & 8355711;
-						put_pixel(&set->rend->main_img, x, y, color);}
+						put_pixel(&set->rend->main_img, x, y, shadows(color,
+							wall_distance));}
 				else
-				{
-					if (y >= screen_height / 2)
-						put_pixel(&set->rend->main_img, x, y, set->floor_color);
-					else
-						put_pixel(&set->rend->main_img, x, y, set->ceiling_color);
-				}
+					put_pixel(&set->rend->main_img, x, y, get_pixel
+					(&set->rend->back_img, x, y));
+//				else
+//				{
+//					if (y >= screen_height / 2)
+//						put_pixel(&set->rend->main_img, x, y, //set->floor_color);
+//						calc_shadows(set->floor_color, y, set->k));
+//					else
+//						put_pixel(&set->rend->main_img, x, y, //set->ceiling_color);
+//							calc_shadows(set->ceiling_color, y, set->k));
+//				}
 			}
 	}
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
+	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->fire
+	.img[set->rend->fire.i].img, -200, 0);
+	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->minimap
+	.img, screen_width - set->game->map_width * 8, screen_height -
+	set->game->map_height
+	* 8);
+	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->game->hero.img,
+		screen_width - 8 * set->game->map_width + (int)(set->game->hero_pos.x * 8)
+		- 1,
+		screen_height - 8 * set->game->map_height + (int)(set->game->hero_pos.y *
+		8) -
+		1);
 //	set->rend->i++;
 	if (set->rend->i == 10)
 		set->rend->i = 0;
-	usleep(1000);
+	set->rend->fire.i++;
+	if (set->rend->fire.i == 20)
+		set->rend->fire.i = 0;
+	int i = 0;
+	while (i++ < 10000)
+
 
 
 //	//timing for input and FPS counter

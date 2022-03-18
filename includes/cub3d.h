@@ -1,8 +1,8 @@
 #ifndef _CUB3D_H_
 #define _CUB3D_H_
 
-#define screen_width 1280
-#define screen_height 640
+#define screen_width 1200
+#define screen_height 600
 #define texWidth 1024
 #define texHeight 1024
 #define mapWidth 24
@@ -32,7 +32,7 @@
 # define UP 13//119
 # define RIGHT 2//100
 # define DOWN 1//115
-# define TRANSPARENCY 0xFF000000
+# define TRANSPARENCY 0xFFFFFFFF
 # define BLACK 0x00000000
 # define WHITE 0x00FFFFFF
 # define RED 0x00FF0000
@@ -45,8 +45,8 @@
 # define HAVE_FLOOR 1
 # define YES 1
 # define NO 0
-# define MV_SPEED 0.1
-# define RT_SPEED 0.05
+# define MV_SPEED 0.12
+# define RT_SPEED 0.07
 
 #include <stddef.h>
 #include <math.h>
@@ -76,11 +76,22 @@ typedef struct s_img{
 	int		height;
 }				t_img;
 
+typedef struct s_fire
+{
+	t_img	img[20];
+	int		i;
+}				t_fire;
+
 typedef struct s_rend
 {
 	void	*mlx;
 	void	*win;
 	t_img	main_img;
+	t_img	back_img;
+	t_img	minimap;
+	int		minimap_x;
+	int 	minimap_y;
+	t_fire	fire;
 	t_img	east;
 	t_img	west;
 	t_img	north;
@@ -114,6 +125,7 @@ typedef struct s_game{
 	t_coordinates	hero_pos;
 	int				map_width;
 	int				map_height;
+	t_img			hero;
 	char			**map;
 
 }				t_game;
@@ -142,6 +154,7 @@ typedef struct s_dataset{
 	unsigned char	ceiling_rgb[3];
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
+	double	k[256];
 }				t_dataset;
 
 /* utils */
@@ -201,6 +214,8 @@ char	*ft_dup_spaces(size_t size);
 void	free_textures_paths(t_dataset *set);
 t_coordinates	get_pos(t_game *game);
 unsigned int	convert_rgb(const unsigned char rgb[3]);
+unsigned int	calc_shadows(unsigned int color, int y, double k[256]);
+void	fill_bg_img(t_dataset *set);
 
 
 
