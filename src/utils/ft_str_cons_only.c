@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:28:22 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/10 22:09:52 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:45:12 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_str_cons_only_chars(char *str, char *str_ch)
 {
-	int i;
+	int	i;
 
 	while (*str)
 	{

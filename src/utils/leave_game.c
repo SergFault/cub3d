@@ -27,6 +27,5 @@ int	leave_game(t_dataset *set)
 	if (set->rend->east.img)
 		mlx_destroy_image(set->rend->mlx, set->rend->east.img);
 	mlx_destroy_window(set->rend->mlx, set->rend->win);
-
 	exit(0);
 }

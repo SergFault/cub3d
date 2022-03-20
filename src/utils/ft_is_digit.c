@@ -6,13 +6,13 @@
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 21:47:47 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/09 21:47:47 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:42:00 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int ft_is_digit(char ch)
+int	ft_is_digit(char ch)
 {
-	return (ch >='0' && ch <='9');
+	return (ch >= '0' && ch <= '9');
 }

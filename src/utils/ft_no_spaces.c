@@ -21,7 +21,7 @@ static int	is_space(char ch)
 		return (0);
 }
 
-int ft_no_spaces(char *str)
+int	ft_no_spaces(char *str)
 {
 	while (str && *str)
 	{

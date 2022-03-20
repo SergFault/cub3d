@@ -6,15 +6,15 @@
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 21:35:09 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/09 21:36:25 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:43:41 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void arr_to_zero(int *arr, int size)
+void	arr_to_zero(int *arr, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
