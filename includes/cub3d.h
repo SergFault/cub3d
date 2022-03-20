@@ -15,6 +15,8 @@
 
 # define WALL_CH '1'
 # define SPACE_CH ' '
+# define X 0
+# define Y 1
 
 
 # define MEM_ERR "Error\nMemory allocation error.\n"
@@ -221,8 +223,12 @@ void	fill_bg_img(t_dataset *set);
 int skip_spaces(char **str);
 int have_all_meta_data(t_dataset *set);
 int		process_mouse(int x, int y, t_dataset *set);
-
-
+int		check_x_coordinate(t_dataset *set, double coordinate);
+int		check_y_coordinate(t_dataset *set, double coordinate);
+void	move_forward(t_dataset *set);
+void	move_back(t_dataset *set);
+void	move_left(t_dataset *set);
+void	move_right(t_dataset *set);
 
 
 

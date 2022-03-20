@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:31 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 18:34:06 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:17:39 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,15 @@ int	process_key_released(int key, t_dataset *set)
 	return (0);
 }
 
-int		process_mouse(int x, int y, t_dataset *set)
+int	process_mouse(int x, int y, t_dataset *set)
 {
 	(void)y;
 	if (x < (screen_width / 2 - 3))
 	{
-		//set->game->hero_pos.turn_right = 0;
 		set->game->hero_pos.turn_left = 1;
 	}
 	else if (x > (screen_width / 2 + 3))
 	{
-		//set->game->hero_pos.turn_left = 0;
 		set->game->hero_pos.turn_right = 1;
 	}
 	else

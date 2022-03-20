@@ -46,6 +46,8 @@ SRC			=	src/main.c \
 				src/utils/ft_is_space.c \
 				src/game_controller/keyboard_processor.c \
 				src/game_controller/movement_processor.c \
+				src/game_controller/check_coordinate.c \
+				src/game_controller/move_processor.c \
 				src/render/render_utils.c \
 				src/render/draw_utils.c \
 				src/utils/ft_str_cons_only.c \
