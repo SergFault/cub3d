@@ -50,8 +50,32 @@ static void	turn_left(t_dataset *set)
 	*(plane[Y]) = old_plane_x * sin(-RT_SPEED) + *(plane[Y]) * cos(-RT_SPEED);
 }
 
+static int	check_mouse(t_dataset *set)
+{
+	int	x;
+	int	move;
+
+	move = 0;
+	mlx_mouse_get_pos(set->rend->win, &x, NULL);
+	if (x < (screen_width / 2 - 1))
+	{
+		move = 1;
+		set->game->hero_pos.turn_left = 1;
+	}
+	else if (x > (screen_width / 2 + 1))
+	{
+		move = 1;
+		set->game->hero_pos.turn_right = 1;
+	}
+	mlx_mouse_move(set->rend->win, screen_width / 2, 0);
+	return (move);
+}
+
 void	movement_processor(t_dataset *set)
 {
+	int	mouse;
+
+	mouse = check_mouse(set);
 	if (set->game->hero_pos.move_front)
 		move_forward(set);
 	if (set->game->hero_pos.move_back)
@@ -64,4 +88,9 @@ void	movement_processor(t_dataset *set)
 		turn_left(set);
 	if (set->game->hero_pos.turn_right)
 		turn_right(set);
+	if (mouse)
+	{
+		set->game->hero_pos.turn_left = 0;
+		set->game->hero_pos.turn_right = 0;
+	}
 }

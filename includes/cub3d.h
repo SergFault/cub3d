@@ -49,7 +49,7 @@
 # define FLOOR 1
 # define YES 1
 # define NO 0
-# define MV_SPEED 0.12
+# define MV_SPEED 0.1
 # define RT_SPEED 0.07
 
 #include <stddef.h>
