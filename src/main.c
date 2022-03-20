@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-static void	init_fire(void *mlx, t_fire *fire)
+int	init_fire(void *mlx, t_fire *fire)
 {
 	fire->i = 0;
 	fire->img[0].img = mlx_png_file_to_image(mlx, "textures/fire/0000.png",
@@ -45,68 +45,26 @@ static void	init_fire(void *mlx, t_fire *fire)
 		&(fire->img[19].width), &(fire->img[19].height));
 }
 
-static int	init_model(void *mlx, t_img img[10], char *path)
-{
-	img->img = mlx_png_file_to_image(mlx, path, &(img->width),
-									 & (img->height));
-	if (!img->img)
-		return ((int) ft_error_null(TEXTURES_INIT_ERROR));
-	img->address = mlx_get_data_addr(img->img, &img->bpp,
-									 &img->line_length,
-									 &img->endian);
-	return (1);
-}
 
-static int	rend_init(t_dataset *set)
-{
-	set->rend->mlx = mlx_init();
-	set->rend->win = mlx_new_window(set->rend->mlx, screen_width,
-							   screen_height, "cub3d");
-	set->rend->main_img.img = mlx_new_image(set->rend->mlx, screen_width,
-									   screen_height);
-	set->rend->main_img.address = mlx_get_data_addr(set->rend->main_img.img,
-											   &set->rend->main_img.bpp,
-											   &set->rend->main_img.line_length,
-											   &set->rend->main_img.endian);
-	set->rend->back_img.img = mlx_new_image(set->rend->mlx, screen_width,
-		screen_height);
-	set->rend->back_img.address = mlx_get_data_addr(set->rend->back_img.img,
-		&set->rend->back_img.bpp,
-		&set->rend->back_img.line_length,
-		&set->rend->back_img.endian);
-	set->rend->minimap.img = mlx_new_image(set->rend->mlx, set->game->map_width *
-	8, set->game->map_height * 8);
-	set->rend->minimap.address = mlx_get_data_addr(set->rend->minimap.img,
-		&set->rend->minimap.bpp,
-		&set->rend->minimap.line_length,
-		&set->rend->minimap.endian);
-	set->game->hero.img = mlx_new_image(set->rend->mlx, 3,
-		3);
-	set->game->hero.address = mlx_get_data_addr(set->game->hero.img,
-		&set->game->hero.bpp,
-		&set->game->hero.line_length,
-		&set->game->hero.endian);
-	init_fire(set->rend->mlx, &set->rend->fire);
-	if(!init_model(set->rend->mlx, &set->rend->west, set->path_west)
-		|| !init_model(set->rend->mlx, &set->rend->east, set->path_east)
-		|| !init_model(set->rend->mlx, &set->rend->north, set->path_north)
-		|| !init_model(set->rend->mlx, &set->rend->south, set->path_south))
-		return (0);
-	return (1);
-}
 
 static int	init(t_dataset *set, char *argv)
 {
 	init_data(set);
 	map_init(set, argv);
+	if (!(set->game->map))
+	{
+		free_textures_paths(set);
+		ft_putstr_fd(MAP_VALID_ERR, STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	if (!rend_init(set))
 		leave_game(set);
 	fill_bg_img(set);
-	game_init(set->game);
+	set->game->hero_pos = get_pos(set->game);
 	return (1);
 }
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_rend		rend;
 	t_game		game;
@@ -128,4 +86,5 @@ int		main(int argc, char **argv)
 	}
 	else
 		ft_putstr_fd(ARGS_ERROR, 2);
+	return (0);
 }

@@ -12,26 +12,6 @@
 
 #include "cub3d.h"
 
-unsigned int	shadows(unsigned int color, double y)
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-	double			intensity;
-
-	r = (color & 0x00FF0000) >> 16;
-	g = (color & 0x0000FF00) >> 8;
-	b = color & 0x000000FF;
-	intensity = 1 / y * 2;
-	if (intensity > 1.0)
-		intensity = 1.0;
-	r = r * intensity;
-	g = g * intensity;
-	b = b * intensity;
-	color = (r << 16) | (g << 8) | b;
-	return (color);
-}
-
 static int	render_image(t_dataset *set)
 {
 	int	i;
@@ -49,11 +29,11 @@ static int	render_image(t_dataset *set)
 	t_img *picture = &set->rend->main_img;
 	char *data_address = set->rend->main_img.address;
 
-	for(int x = 0; x < screen_width; x++)
+	for(int x = 0; x < W_RES; x++)
 	{
 
 		//calculate ray position and direction
-		double cameraX = 2 * x / (double)screen_width - 1; //x-coordinate in camera space
+		double cameraX = 2 * x / (double)W_RES - 1; //x-coordinate in camera space
 		double rayDirX = dirX + planeX*cameraX;
 		double rayDirY = dirY + planeY*cameraX;
 
@@ -136,14 +116,14 @@ static int	render_image(t_dataset *set)
 		else wall_distance = (sideDistY - deltaDistY);
 
 		//Calculate height of line to draw on screen
-		int lineHeight = (int)(screen_height / wall_distance);
+		int lineHeight = (int)(H_RES / wall_distance);
 
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + screen_height / 2;
+		int drawStart = -lineHeight / 2 + H_RES / 2;
 		if(drawStart < 0) drawStart = 0;
-		int drawEnd = lineHeight / 2 + screen_height / 2;
-		if(drawEnd >= screen_height) drawEnd = screen_height - 1;
+		int drawEnd = lineHeight / 2 + H_RES / 2;
+		if(drawEnd >= H_RES) drawEnd = H_RES - 1;
 
 
 		//calculate value of wallX
@@ -166,7 +146,7 @@ static int	render_image(t_dataset *set)
 		// How much to increase the texture coordinate per screen pixel
 		double step = 1.0 * texHeight / lineHeight;
 		// Starting texture coordinate
-		double texPos = (drawStart - (double)screen_height / 2 + (double)lineHeight / 2) * step;
+		double texPos = (drawStart - (double)H_RES / 2 + (double)lineHeight / 2) * step;
 		t_img *img;
 		if (side == NORTH_SIDE)
 			img = &set->rend->north;
@@ -177,7 +157,7 @@ static int	render_image(t_dataset *set)
 		else
 			img = &set->rend->south;
 
-			for(int y = 0; y < screen_height; y++)
+			for(int y = 0; y < H_RES; y++)
 			{
 
 				if (y >= drawStart && y <= drawEnd)
@@ -197,22 +177,21 @@ static int	render_image(t_dataset *set)
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->fire
 	.img[set->rend->fire.i].img, -200, 0);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->minimap
-	.img, screen_width - set->game->map_width * 8, screen_height -
+	.img, W_RES - set->game->map_width * 8, H_RES -
 	set->game->map_height
 	* 8);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->game->hero.img,
-		screen_width - 8 * set->game->map_width + (int)(set->game->hero_pos.x * 8)
+		W_RES - 8 * set->game->map_width + (int)(set->game->hero_pos.x * 8)
 		- 1,
-		screen_height - 8 * set->game->map_height + (int)(set->game->hero_pos.y *
-		8) -
+		H_RES - 8 * set->game->map_height + (int)(set->game->hero_pos.y *
+												  8) -
 		1);
 	set->rend->fire.i++;
 	if (set->rend->fire.i == 20)
 		set->rend->fire.i = 0;
-	while (i++ < 10000)
-		 ;
-
-
+	i = 0;
+	while (i < 5000000)
+		i++;
 
 //	//timing for input and FPS counter
 //	oldTime = time;

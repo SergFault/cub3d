@@ -53,11 +53,11 @@ int	process_key_released(int key, t_dataset *set)
 int	process_mouse(int x, int y, t_dataset *set)
 {
 	(void)y;
-	if (x < (screen_width / 2 - 3))
+	if (x < (W_RES / 2 - 3))
 	{
 		set->game->hero_pos.turn_left = 1;
 	}
-	else if (x > (screen_width / 2 + 3))
+	else if (x > (W_RES / 2 + 3))
 	{
 		set->game->hero_pos.turn_right = 1;
 	}
@@ -66,6 +66,6 @@ int	process_mouse(int x, int y, t_dataset *set)
 		set->game->hero_pos.turn_left = 0;
 		set->game->hero_pos.turn_right = 0;
 	}
-	mlx_mouse_move(set->rend->win, screen_width / 2, 0);
+	mlx_mouse_move(set->rend->win, W_RES / 2, 0);
 	return (0);
 }

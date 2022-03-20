@@ -50,6 +50,8 @@ SRC			=	src/main.c \
 				src/game_controller/move_processor.c \
 				src/render/render_utils.c \
 				src/render/draw_utils.c \
+				src/render/draw_utils_2.c \
+				src/render/fill_background.c \
 				src/utils/ft_str_cons_only.c \
 				src/validation/checker_map_content.c \
 				src/validation/check_n_skip_colors.c \
@@ -57,7 +59,6 @@ SRC			=	src/main.c \
                 src/validation/have_all_meta_data.c \
 				src/validation/check_n_skip_map.c \
 				src/utils/ft_no_spaces.c
-
 
 OBJS		= 	${SRC:.c=.o}
 

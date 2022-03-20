@@ -57,17 +57,17 @@ static int	check_mouse(t_dataset *set)
 
 	mlx_mouse_get_pos(set->rend->win, &x, &move);
 	move = 0;
-	if (x < (screen_width / 2 - 1))
+	if (x < (W_RES / 2 - 1))
 	{
 		move = 1;
 		set->game->hero_pos.turn_left = 1;
 	}
-	else if (x > (screen_width / 2 + 1))
+	else if (x > (W_RES / 2 + 1))
 	{
 		move = 1;
 		set->game->hero_pos.turn_right = 1;
 	}
-	mlx_mouse_move(set->rend->win, screen_width / 2, 0);
+	mlx_mouse_move(set->rend->win, W_RES / 2, 0);
 	return (move);
 }
 

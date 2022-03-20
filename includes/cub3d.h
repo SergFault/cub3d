@@ -3,8 +3,8 @@
 
 #include <stdio.h>/////
 
-#define screen_width 1200
-#define screen_height 600
+#define W_RES 1200
+#define H_RES 600
 #define texWidth 1024
 #define texHeight 1024
 #define mapWidth 24
@@ -211,25 +211,24 @@ int	ft_str_cons_only_chars(char *str, char *str_ch);
 int	ft_is_space(char ch);
 int check_n_skip_map(t_list **line_lst, t_dataset *set);
 int	ft_atoi(const char *str);
-//void	set_rgb_arr(const int *src, int *dst);
 char	**str_lines_to_arr(t_list *lines, t_game *game);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_dup_spaces(size_t size);
 void	free_textures_paths(t_dataset *set);
 t_coordinates	get_pos(t_game *game);
 unsigned int	convert_rgb(const int rgb[3]);
-unsigned int	calc_shadows(unsigned int color, int y, double k[256]);
 void	fill_bg_img(t_dataset *set);
 int skip_spaces(char **str);
 int have_all_meta_data(t_dataset *set);
-int		process_mouse(int x, int y, t_dataset *set);
 int		check_x_coordinate(t_dataset *set, double coordinate);
 int		check_y_coordinate(t_dataset *set, double coordinate);
 void	move_forward(t_dataset *set);
 void	move_back(t_dataset *set);
 void	move_left(t_dataset *set);
 void	move_right(t_dataset *set);
-
+unsigned int	shadows(unsigned int color, double y);
+int	rend_init(t_dataset *set);
+int	init_fire(void *mlx, t_fire *fire);
 
 
 
