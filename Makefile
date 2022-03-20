@@ -51,6 +51,8 @@ SRC			=	src/main.c \
 				src/utils/ft_str_cons_only.c \
 				src/validation/checker_map_content.c \
 				src/validation/check_n_skip_colors.c \
+				src/validation/skip_count_spaces.c \
+				src/validation/have_all_meta_data.c \
 				src/validation/check_n_skip_map.c \
 				src/utils/ft_no_spaces.c
 

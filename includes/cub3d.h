@@ -43,8 +43,8 @@
 # define WEST_SIDE 2
 # define EAST_SIDE 3
 # define WALL_GAP 0.1
-# define HAVE_CEIL 0
-# define HAVE_FLOOR 1
+# define CEIL 0
+# define FLOOR 1
 # define YES 1
 # define NO 0
 
@@ -196,10 +196,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_dup_spaces(size_t size);
 void	free_textures_paths(t_dataset *set);
 t_coordinates	get_pos(t_game *game);
-
-
-
-
-
+int skip_spaces(char **str);
+int have_all_meta_data(t_dataset *set);
 
 #endif

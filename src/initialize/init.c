@@ -26,6 +26,8 @@ void set_img_null(t_img *img)
 
 void init_data(t_dataset *set)
 {
+	set->ceiling_rgb[0] = -1;
+	set->floor_rgb[0] = -1;
 	set->rend->mlx = NULL;
 	set->rend->win = NULL;
 	set->path_north = NULL;
