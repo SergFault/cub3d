@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include "mlx.h"
 #include "cub3d.h"
 
 static void	init_fire(void *mlx, t_fire *fire)
@@ -94,13 +92,6 @@ static int	rend_init(t_dataset *set)
 		|| !init_model(set->rend->mlx, &set->rend->north, set->path_north)
 		|| !init_model(set->rend->mlx, &set->rend->south, set->path_south))
 		return (0);
-//=======
-//	rend->main_img.address = mlx_get_data_addr(rend->main_img.img,
-//											   &rend->main_img.bpp,
-//											   &rend->main_img.line_length,
-//											   &rend->main_img.endian);
-//	init_model(rend->mlx, rend->wall, WALL_PATH);
-//>>>>>>> mac_madness
 	return (1);
 }
 
@@ -147,16 +138,11 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		set.game = &game;
-		printf("set.game\n");
 		set.rend = &rend;
 		init(&set, argv[1]);
-		printf("init\n");
 		mlx_hook(rend.win, 2, (1L << 0), process_key_pressed, &set);
-		printf("mlx hook key pressed\n");
 		mlx_hook(set.rend->win, 3, (1L << 1), process_key_released, &set);
-		printf("mlx hook key released\n");
 		mlx_hook(set.rend->win, 17, 1L << 17, &leave_game, &set);
-		printf("mlx hook game exit\n");
 		mlx_mouse_hide();
 		mlx_hook(set.rend->win, 6, 0, process_mouse, &set);
 		mlx_loop_hook(rend.mlx, game_loop, &set);

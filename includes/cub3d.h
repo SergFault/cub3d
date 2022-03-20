@@ -55,6 +55,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include "mlx.h"
 
 typedef struct s_list
 {

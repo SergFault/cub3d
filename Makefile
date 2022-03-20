@@ -5,7 +5,7 @@ CC			=	clang
 FLAGS		=	-g #-Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
 FLAGS 		+= -MMD -MP
 -fsanitize=address
-LIB_BIN		=	mlx-linux/libmlx_Linux.a
+LIB_BIN		=	libmlx.dylib
 MLX_DIR		=	minilibx_mms_20200219
 LIB			=	-L. -lmlx -framework OpenGL -framework AppKit
 INCLUDES	=	includes/
@@ -60,27 +60,28 @@ SRC			=	src/main.c \
 OBJS		= 	${SRC:.c=.o}
 
 %.o:		%.c Makefile $(HEADER)
-			$(CC) $(FLAGS) -I$(INCLUDES) -c $< -o $@
+			$(CC) $(FLAGS) -I$(INCLUDES) -I$(MLX_DIR) -c $< -o $@
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) #$(LIB_BIN)
+$(NAME):	$(OBJS) $(LIB_BIN)
 			$(CC) $(FLAGS) -o $@ $^ $(LIB)
 
 $(LIB_BIN):
 			make -C $(MLX_DIR)
+			cp $(MLX_DIR)/$(LIB_BIN) $(LIB_BIN)
 
 clean:
 			make -C $(MLX_DIR) clean
-			rm -f ${OBJS}
-			rm -f ${OBJ_M}
-			rm -f ${OBJ_B}
+			rm -f $(OBJS)
+			rm -f $(OBJ_M)
+			rm -f $(OBJ_B)
 			rm -f valgrind-out.txt
 
 fclean:		clean
 			make -C $(MLX_DIR) clean
-			rm -f ${LIB_BIN}
-			rm -f ${NAME}
+			rm -f $(LIB_BIN)
+			rm -f $(NAME)
 
 re:			fclean all
 
