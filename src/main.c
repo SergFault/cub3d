@@ -122,7 +122,7 @@ int		main(int argc, char **argv)
 		mlx_hook(set.rend->win, 3, (1L << 1), process_key_released, &set);
 		mlx_hook(set.rend->win, 17, 1L << 17, &leave_game, &set);
 		mlx_mouse_hide();
-		mlx_hook(set.rend->win, 6, 0, process_mouse, &set);
+		//mlx_hook(set.rend->win, 6, 0, process_mouse, &set);
 		mlx_loop_hook(rend.mlx, game_loop, &set);
 		mlx_loop(rend.mlx);
 	}
