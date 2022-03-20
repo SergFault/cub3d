@@ -6,14 +6,14 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:40 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/17 21:04:22 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:20:09 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 #include "cub3d.h"
 
-void set_img_null(t_img *img)
+void	set_img_null(t_img *img)
 {
 	img->img = NULL;
 	img->address = NULL;
@@ -24,7 +24,7 @@ void set_img_null(t_img *img)
 	img->height = 0;
 }
 
-void init_data(t_dataset *set)
+void	init_data(t_dataset *set)
 {
 	int	i;
 
@@ -53,7 +53,7 @@ void init_data(t_dataset *set)
 	set->game->map = NULL;
 }
 
-void game_init(t_game *game)
+void	game_init(t_game *game)
 {
 	game->hero_pos = get_pos(game);
 }

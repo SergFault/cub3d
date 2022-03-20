@@ -6,15 +6,15 @@
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 20:40:26 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/17 21:01:25 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 19:32:21 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static t_coordinates empty_coordinates(void)
+static t_coordinates	empty_coordinates(void)
 {
-	t_coordinates coordinates;
+	t_coordinates	coordinates;
 
 	coordinates.x = 0;
 	coordinates.y = 0.5;
@@ -28,47 +28,49 @@ static t_coordinates empty_coordinates(void)
 	coordinates.move_left = 0;
 	coordinates.turn_left = 0;
 	coordinates.turn_right = 0;
-	return coordinates;
+	return (coordinates);
 }
 
-t_coordinates define_position(char ch, t_coordinates coor)
+static void	set_coor_cam_plane(t_coordinates *coor, double x, double y)
+{
+	coor->cam_plane_x = x;
+	coor->cam_plane_y = y;
+}
+
+static void	set_coor_dir(t_coordinates *coor, double x, double y)
+{
+	coor->dir_x = x;
+	coor->dir_y = y;
+}
+
+t_coordinates	define_position(char ch, t_coordinates coor)
 {
 	if (ch == 'E')
 	{
-		coor.dir_x = 1;
-		coor.dir_y = 0;
-		coor.cam_plane_x = 0;
-		coor.cam_plane_y = 1;
+		set_coor_dir(&coor, 1, 0);
+		set_coor_cam_plane(&coor, 0, 1);
 	}
 	if (ch == 'W')
 	{
-		coor.dir_x = -1;
-		coor.dir_y = 0;
-		coor.cam_plane_x = 0;
-		coor.cam_plane_y = -1;
+		set_coor_dir(&coor, -1, 0);
+		set_coor_cam_plane(&coor, 0, -1);
 	}
 	if (ch == 'N')
 	{
-		coor.dir_x = 0;
-		coor.dir_y = -1;
-		coor.cam_plane_x = 1;
-		coor.cam_plane_y = 0;
+		set_coor_dir(&coor, 0, -1);
+		set_coor_cam_plane(&coor, 1, 0);
 	}
 	if (ch == 'S')
 	{
-		coor.dir_x = 0;
-		coor.dir_y = 1;
-		coor.cam_plane_x = -1;
-		coor.cam_plane_y = 0;
+		set_coor_dir(&coor, 0, 1);
+		set_coor_cam_plane(&coor, -1, 0);
 	}
-	//coor.x += 0.5;
-	//coor.y += 0.5;
-	return coor;
+	return (coor);
 }
 
-t_coordinates get_pos(t_game *game)
+t_coordinates	get_pos(t_game *game)
 {
-	t_coordinates pos;
+	t_coordinates	pos;
 
 	pos = empty_coordinates();
 	while (pos.y < game->map_height)
@@ -80,7 +82,8 @@ t_coordinates get_pos(t_game *game)
 					|| (game->map[(int) pos.y][(int) pos.x] == 'W')
 					|| (game->map[(int) pos.y][(int) pos.x] == 'S')
 					|| (game->map[(int) pos.y][(int) pos.x] == 'N'))
-				return (define_position(game->map[(int) pos.y][(int) pos.x], pos));
+				return (define_position(game->map[(int) pos.y][(int) pos.x],
+					pos));
 			pos.x++;
 		}
 		pos.y++;
