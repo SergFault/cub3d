@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:08 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/17 15:17:09 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 18:29:25 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,59 +26,44 @@ int	check_extension(char *argv)
 	return (0);
 }
 
-static int	check_rect(t_list *map)
+static int	check_chars(char **map, int map_width, int map_height)
 {
-	size_t	width;
-
-	width = ft_strlen((char *)map->content);
-	map = map->next;
-	while (map)
-	{
-		if (ft_strlen((char *)map->content) != width)
-			return (0);
-		map = map->next;
-	}
-	return (1);
-}
-
-static int	check_chars(t_list *map)
-{
-	char	*line;
 	char	*valid;
+	int		i;
+	int		j;
 
+	i = 0;
 	valid = VALID_CHARS;
-	while (map)
+	while (i < map_height)
 	{
-		line = (char *)map->content;
-		while (*line)
+		j = 0;
+		while (j < map_width)
 		{
-			if (!(ft_strchr(valid, *line)))
+			if (!ft_str_cons_only(valid, map[i][j]))
 				return (0);
-			line++;
 		}
-		map = map->next;
 	}
 	return (1);
 }
 
-static int have_bad_neighbor(char  **map, int y, int x, t_game *game)
+static int	have_bad_neighbor(char **map, int y, int x, t_game *game)
 {
-	if (y <= 0 || x <= 0 || y >= game->map_height - 1 || x >= game->map_width - 1)
+	if (y <= 0 || x <= 0
+		|| y >= game->map_height - 1 || x >= game->map_width - 1)
 		return (1);
-	if (map[y - 1][x] == SPACE_CH || map[y + 1][x]  == SPACE_CH
+	if (map[y - 1][x] == SPACE_CH || map[y + 1][x] == SPACE_CH
 		|| map[y][x - 1] == SPACE_CH || map[y][x + 1] == SPACE_CH)
 		return (1);
 	return (0);
 }
 
-static int	check_walls(char  **map, t_game *game)
+static int	check_walls(char **map, t_game *game)
 {
-	int 	i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-
 	while (map[i])
 	{
 		while (map [i][j])
@@ -94,9 +79,11 @@ static int	check_walls(char  **map, t_game *game)
 	return (1);
 }
 
-int	validate_map(char  **map, t_game *game)
+int	validate_map(char **map, t_game *game)
 {
-	if (!(check_map_content(map)) || !(check_walls(map, game)))
+	if (!(check_map_content(map))
+		|| !(check_walls(map, game))
+		|| check_chars(map, game->map_width, game->map_height))
 		return (0);
 	return (1);
 }
