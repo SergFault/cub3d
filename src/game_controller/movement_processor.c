@@ -1,112 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement_processor.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/20 18:42:57 by Sergey            #+#    #+#             */
+/*   Updated: 2022/03/20 19:08:13 by Sergey           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
-int check_x_coordinate(t_dataset *set, double coordinate)
+static void	turn_right(t_dataset *set)
 {
+	double	*dir[2];
+	double	*plane[2];
+	double	old_dir_x;
+	double	old_plane_x;
 
-	if (set->game->map[(int)set->game->hero_pos.y][(int)(coordinate)] != '1')
-		return (1);
-	return (0);
+	dir[X] = &set->game->hero_pos.dir_x;
+	dir[Y] = &set->game->hero_pos.dir_y;
+	plane[X] = &set->game->hero_pos.cam_plane_x;
+	plane[Y] = &set->game->hero_pos.cam_plane_y;
+	old_dir_x = *(dir[X]);
+	*(dir[X]) = *(dir[X]) * cos(RT_SPEED) - *(dir[Y]) * sin(RT_SPEED);
+	*(dir[Y]) = old_dir_x * sin(RT_SPEED) + *(dir[Y]) * cos(RT_SPEED);
+	old_plane_x = *(plane[X]);
+	*(plane[X]) = *(plane[X]) * cos(RT_SPEED) - *(plane[Y]) * sin(RT_SPEED);
+	*(plane[Y]) = old_plane_x * sin(RT_SPEED) + *(plane[Y]) * cos(RT_SPEED);
 }
 
-int check_y_coordinate(t_dataset *set, double coordinate)
+static void	turn_left(t_dataset *set)
 {
-	if (set->game->map[(int)(coordinate)][(int)set->game->hero_pos.x] != '1')
-		return (1);
-	return (0);
+	double	*dir[2];
+	double	*plane[2];
+	double	old_dir_x;
+	double	old_plane_x;
+
+	dir[X] = &set->game->hero_pos.dir_x;
+	dir[Y] = &set->game->hero_pos.dir_y;
+	plane[X] = &set->game->hero_pos.cam_plane_x;
+	plane[Y] = &set->game->hero_pos.cam_plane_y;
+	old_dir_x = *(dir[X]);
+	*(dir[X]) = *(dir[X]) * cos(-RT_SPEED) - *(dir[Y]) * sin(-RT_SPEED);
+	*(dir[Y]) = old_dir_x * sin(-RT_SPEED) + *(dir[Y]) * cos(-RT_SPEED);
+	old_plane_x = *(plane[X]);
+	*(plane[X]) = *(plane[X]) * cos(-RT_SPEED) - *(plane[Y]) * sin(-RT_SPEED);
+	*(plane[Y]) = old_plane_x * sin(-RT_SPEED) + *(plane[Y]) * cos(-RT_SPEED);
 }
 
-void movement_processor(t_dataset *set)
+static int	check_mouse(t_dataset *set)
 {
-	double *pos_x;
-	double *pos_y;
-	double pos_x_check;
-	double pos_y_check;
-	double *dir_x;
-	double *dir_y;
-	double *plane_x;
-	double *plane_y;
+	int	x;
+	int	move;
 
-	pos_x = &set->game->hero_pos.x;
-	pos_y = &set->game->hero_pos.y;
-	dir_x = &set->game->hero_pos.dir_x;
-	dir_y = &set->game->hero_pos.dir_y;
-	plane_x = &set->game->hero_pos.cam_plane_x;
-	plane_y  = &set->game->hero_pos.cam_plane_y;
-
-
-	int x,y;
-	mlx_mouse_get_pos(set->rend->win, &x, &y);
+	move = 0;
+	mlx_mouse_get_pos(set->rend->win, &x, NULL);
 	if (x < (screen_width / 2 - 1))
 	{
-		//set->game->hero_pos.turn_right = 0;
+		move = 1;
 		set->game->hero_pos.turn_left = 1;
 	}
 	else if (x > (screen_width / 2 + 1))
 	{
-		//set->game->hero_pos.turn_left = 0;
+		move = 1;
 		set->game->hero_pos.turn_right = 1;
 	}
 	mlx_mouse_move(set->rend->win, screen_width / 2, 0);
+	return (move);
+}
 
+void	movement_processor(t_dataset *set)
+{
+	int	mouse;
+
+	mouse = check_mouse(set);
 	if (set->game->hero_pos.move_front)
-	{
-		pos_x_check = *pos_x + *dir_x * MV_SPEED;
-		pos_y_check = *pos_y + *dir_y * MV_SPEED;
-		if (check_x_coordinate(set, pos_x_check))
-			*pos_x = pos_x_check;
-		if (check_y_coordinate(set, pos_y_check))
-			*pos_y = pos_y_check;
-	}
+		move_forward(set);
 	if (set->game->hero_pos.move_back)
-	{
-		pos_x_check = *pos_x - *dir_x * MV_SPEED;
-		pos_y_check = *pos_y - *dir_y * MV_SPEED;
-		if (check_x_coordinate(set, pos_x_check))
-			*pos_x = pos_x_check;
-		if (check_y_coordinate(set, pos_y_check))
-			*pos_y = pos_y_check;
-	}
+		move_back(set);
 	if (set->game->hero_pos.move_left)
-	{
-		pos_x_check = *pos_x + (*dir_x * cos(-M_PI_2) - *dir_y * sin(-M_PI_2))  * MV_SPEED;
-		pos_y_check = *pos_y + (*dir_x * sin(-M_PI_2) + *dir_y * cos(-M_PI_2)) * MV_SPEED;
-		if (check_x_coordinate(set, pos_x_check))
-			*pos_x = pos_x_check;
-		if (check_y_coordinate(set, pos_y_check))
-			*pos_y = pos_y_check;
-	}
+		move_left(set);
 	if (set->game->hero_pos.move_right)
-	{
-		pos_x_check = *pos_x + (*dir_x * cos(M_PI_2) - *dir_y * sin(M_PI_2))  * MV_SPEED;
-		pos_y_check = *pos_y + (*dir_x * sin(M_PI_2) + *dir_y * cos(M_PI_2)) * MV_SPEED;
-		if (check_x_coordinate(set, pos_x_check))
-			*pos_x = pos_x_check;
-		if (check_y_coordinate(set, pos_y_check))
-			*pos_y = pos_y_check;
-	}
+		move_right(set);
 	if (set->game->hero_pos.turn_left)
-	{
-		double oldDirX = *dir_x;
-		*dir_x = *dir_x * cos(-RT_SPEED) - *dir_y * sin(-RT_SPEED);
-		*dir_y = oldDirX * sin(-RT_SPEED) + *dir_y * cos(-RT_SPEED);
-		double oldPlaneX = *plane_x;
-		*plane_x = *plane_x * cos(-RT_SPEED) - *plane_y * sin(-RT_SPEED);
-		*plane_y = oldPlaneX * sin(-RT_SPEED) + *plane_y * cos(-RT_SPEED);
-	}
+		turn_left(set);
 	if (set->game->hero_pos.turn_right)
+		turn_right(set);
+	if (mouse)
 	{
-		double oldDirX = *dir_x;
-		*dir_x = *dir_x * cos(RT_SPEED) - *dir_y * sin(RT_SPEED);
-		*dir_y = oldDirX * sin(RT_SPEED) + *dir_y * cos(RT_SPEED);
-		double oldPlaneX = *plane_x;
-		*plane_x = *plane_x * cos(RT_SPEED) - *plane_y * sin(RT_SPEED);
-		*plane_y = oldPlaneX * sin(RT_SPEED) + *plane_y * cos(RT_SPEED);
-	}
-
-	if (x != screen_width / 2)
-	{
-		set->game->hero_pos.turn_left = 0;//
-		set->game->hero_pos.turn_right = 0;//
+		set->game->hero_pos.turn_left = 0;
+		set->game->hero_pos.turn_right = 0;
 	}
 }
