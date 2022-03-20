@@ -6,7 +6,7 @@
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 21:33:00 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 13:18:46 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 13:25:51 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ void skip_num_comma(char **pattern)
 		(*pattern)++;
 }
 
+
+int correct_colors(int color1, int color2, int color3)
+{
+	return ((color1 < 256 && color1 >=0)
+			&& (color2 < 256 && color2 >=0)
+			&& (color3 < 256 && color3 >=0));
+}
+
 int parse_colors(char *pattern, t_dataset *set, int side)
 {
 	if (side == CEIL)
@@ -67,6 +75,8 @@ int parse_colors(char *pattern, t_dataset *set, int side)
 		set->ceiling_rgb[1] = ft_atoi(pattern);
 		skip_num_comma(&pattern);
 		set->ceiling_rgb[2] = ft_atoi(pattern);
+		if (!correct_colors(set->ceiling_rgb[0], set->ceiling_rgb[1], set->ceiling_rgb[2]))
+			return (0);
 	}
 	if (side == FLOOR)
 	{
@@ -77,6 +87,8 @@ int parse_colors(char *pattern, t_dataset *set, int side)
 		set->floor_rgb[1] = ft_atoi(pattern);
 		skip_num_comma(&pattern);
 		set->floor_rgb[2] = ft_atoi(pattern);
+		if (!correct_colors(set->floor_rgb[0], set->floor_rgb[1], set->floor_rgb[2]))
+			return (0);
 	}
 	return (1);
 }

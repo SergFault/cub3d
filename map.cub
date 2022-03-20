@@ -1,12 +1,12 @@
 NO ./textures/eagle.xpm
 EA ./textures/wood.xpm
 
-F 220,100,0
+F 255,100,255
 
 SO    ./textures/redbrick.xpm
 
 
-C  225,30,0
+C  225,30,255
 
 WE ./textures/stone.xpm
 
