@@ -36,9 +36,9 @@ int	ft_str_cons_only(char *str, char ch)
 {
 	while (*str)
 	{
-		if (*str != ch)
-			return (0);
+		if (*str == ch)
+			return (1);
 		str++;
 	}
-	return (1);
+	return (0);
 }

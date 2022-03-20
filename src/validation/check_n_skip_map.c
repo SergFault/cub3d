@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static int max_width(t_list *lines)
+static int	max_width(t_list *lines)
 {
 	int	width;
 
@@ -26,13 +26,13 @@ static int max_width(t_list *lines)
 	return (width);
 }
 
-void write_end(t_list *lines, int width)
+void	write_end(t_list *lines, int width)
 {
-	char *end;
-	char *temp;
+	char	*end;
+	char	*temp;
 
 	end = NULL;
-	while(lines)
+	while (lines)
 	{
 		if (ft_strlen(lines->content) < width)
 		{
@@ -46,13 +46,13 @@ void write_end(t_list *lines, int width)
 	}
 }
 
-int check_n_skip_map(t_list **line_lst, t_dataset *set)
+int	check_n_skip_map(t_list **line_lst, t_dataset *set)
 {
-	t_list *iter;
+	t_list	*iter;
 
 	iter = *line_lst;
-	while (iter != 0 &&
-		   ft_str_cons_only_chars((char *) iter->content, VALID_CHARS))
+	while (iter != 0
+		&& ft_str_cons_only_chars((char *) iter->content, VALID_CHARS))
 		iter = iter->next;
 	if (iter != NULL)
 		return (0);

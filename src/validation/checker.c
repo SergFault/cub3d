@@ -41,7 +41,9 @@ static int	check_chars(char **map, int map_width, int map_height)
 		{
 			if (!ft_str_cons_only(valid, map[i][j]))
 				return (0);
+			j++;
 		}
+		i++;
 	}
 	return (1);
 }
@@ -83,7 +85,7 @@ int	validate_map(char **map, t_game *game)
 {
 	if (!(check_map_content(map))
 		|| !(check_walls(map, game))
-		|| check_chars(map, game->map_width, game->map_height))
+		|| !check_chars(map, game->map_width, game->map_height))
 		return (0);
 	return (1);
 }

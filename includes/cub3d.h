@@ -7,8 +7,6 @@
 #define H_RES 600
 #define texWidth 1024
 #define texHeight 1024
-#define mapWidth 24
-#define mapHeight 24
 #define BUFFER_SIZE 40
 # define VALID_CHARS "01NSEW "
 
@@ -49,7 +47,7 @@
 # define FLOOR 1
 # define YES 1
 # define NO 0
-# define MV_SPEED 0.1
+# define MV_SPEED 0.03
 # define RT_SPEED 0.07
 
 #include <stddef.h>
@@ -180,8 +178,8 @@ typedef struct s_dataset{
 	char	*path_west;
 	char	*path_north;
 	char	*path_south;
-	int		floor_rgb[3];
-	int		ceiling_rgb[3];
+	int		fl_rgb[3];
+	int		ce_rgb[3];
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
 	double	k[256];

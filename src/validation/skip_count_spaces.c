@@ -12,16 +12,15 @@
 
 #include "cub3d.h"
 
-int skip_spaces(char **str)
+int	skip_spaces(char **str)
 {
-	int c;
+	int	c;
 
 	c = 0;
-	while(**str && **str == ' ')
+	while (**str && **str == ' ')
 	{
 		(*str)++;
 		c++;
 	}
-
 	return (c);
 }

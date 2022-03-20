@@ -12,28 +12,12 @@
 
 #include "cub3d.h"
 
-static int parse_side(int side, t_list *line, t_dataset *set)
+static int	parse_side_2(int side, t_list *line, t_dataset *set)
 {
-	char *line_str;
+	char	*line_str;
 
 	line_str = (char *)line->content;
-	if (side == SOUTH_SIDE)
-	{
-		if (set->path_south != NULL)
-			return (0);
-		line_str += 3;
-		skip_spaces(&line_str);
-		set->path_south = ft_strdup(line_str);
-	}
-	else if (side == NORTH_SIDE)
-	{
-		if (set->path_north != NULL)
-			return (0);
-		line_str += 3;
-		skip_spaces(&line_str);
-		set->path_north = ft_strdup(line_str);
-	}
-	else if (side == WEST_SIDE)
+	if (side == WEST_SIDE)
 	{
 		if (set->path_west != NULL)
 			return (0);
@@ -52,32 +36,57 @@ static int parse_side(int side, t_list *line, t_dataset *set)
 	return (1);
 }
 
-static int parse_path(t_list *line, t_dataset *set)
+static int	parse_side(int side, t_list *line, t_dataset *set)
 {
-	char *line_str;
+	char	*line_str;
+
+	line_str = (char *)line->content;
+	if (side == SOUTH_SIDE)
+	{
+		if (set->path_south != NULL)
+			return (0);
+		line_str += 3;
+		skip_spaces(&line_str);
+		set->path_south = ft_strdup(line_str);
+	}
+	else if (side == NORTH_SIDE)
+	{
+		if (set->path_north != NULL)
+			return (0);
+		line_str += 3;
+		skip_spaces(&line_str);
+		set->path_north = ft_strdup(line_str);
+	}
+	else
+		return (parse_side_2(side, line, set));
+	return (1);
+}
+
+static int	parse_path(t_list *line, t_dataset *set)
+{
+	char	*line_str;
 
 	line_str = (char *)(line->content);
-	if (ft_strncmp(line_str, "NO ", 3)  == 0)
+	if (ft_strncmp(line_str, "NO ", 3) == 0)
 	{
-		return parse_side(NORTH_SIDE, line, set);
+		return (parse_side(NORTH_SIDE, line, set));
 	}
-	else if (ft_strncmp(line_str, "SO ", 3)  == 0)
+	else if (ft_strncmp(line_str, "SO ", 3) == 0)
 	{
-		return parse_side(SOUTH_SIDE, line, set);
+		return (parse_side(SOUTH_SIDE, line, set));
 	}
 	else if (ft_strncmp(line_str, "WE ", 3) == 0)
 	{
-		return parse_side(WEST_SIDE, line, set);
+		return (parse_side(WEST_SIDE, line, set));
 	}
-	else if (ft_strncmp(line_str, "EA ", 3)  == 0)
+	else if (ft_strncmp(line_str, "EA ", 3) == 0)
 	{
-		return parse_side(EAST_SIDE, line, set);
+		return (parse_side(EAST_SIDE, line, set));
 	}
 	return (0);
 }
 
-
-int check_n_skip_textures(t_list **list, t_dataset *set)
+int	check_n_skip_textures(t_list **list, t_dataset *set)
 {
 	if (parse_path(*list, set))
 	{
@@ -86,4 +95,3 @@ int check_n_skip_textures(t_list **list, t_dataset *set)
 	}
 	return (0);
 }
-

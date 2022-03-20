@@ -27,8 +27,8 @@ void	init_data(t_dataset *set)
 {
 	int	i;
 
-	set->ceiling_rgb[0] = -1;
-	set->floor_rgb[0] = -1;
+	set->ce_rgb[0] = -1;
+	set->fl_rgb[0] = -1;
 	set->rend->mlx = NULL;
 	set->rend->win = NULL;
 	set->path_north = NULL;
@@ -62,6 +62,35 @@ static int	init_model(void *mlx, t_img img[10], char *path)
 	return (1);
 }
 
+int	init_fire(void *mlx, t_fire *fire)
+{
+	char	*path;
+	int		res;
+
+	path = ft_strdup("textures/fire/0000.png");
+	if (!path)
+		return (0);
+	fire->i = 0;
+	res = 0;
+	while (fire->i < 20)
+	{
+		fire->img[fire->i].img = mlx_png_file_to_image(mlx, path,
+				&(fire->img[fire->i].width), &(fire->img[fire->i].height));
+		if (fire->img[fire->i].img)
+			res++;
+		fire->i++;
+		if (fire->i == 10)
+		{
+			path[16]++;
+			path[17] = '0';
+		}
+		else
+			path[17]++;
+	}
+	free(path);
+	return (fire->i == res);
+}
+
 int	rend_init(t_dataset *set)
 {
 	set->rend->mlx = mlx_init();
@@ -83,9 +112,9 @@ int	rend_init(t_dataset *set)
 	set->game->hero.address = mlx_get_data_addr(set->game->hero.img,
 			&set->game->hero.bpp, &set->game->hero.line_length,
 			&set->game->hero.endian);
-	init_fire(set->rend->mlx, &set->rend->fire);
 	return (init_model(set->rend->mlx, &set->rend->west, set->path_west)
 		&& init_model(set->rend->mlx, &set->rend->east, set->path_east)
 		&& init_model(set->rend->mlx, &set->rend->north, set->path_north)
-		&& init_model(set->rend->mlx, &set->rend->south, set->path_south));
+		&& init_model(set->rend->mlx, &set->rend->south, set->path_south)
+		&& init_fire(set->rend->mlx, &set->rend->fire));
 }
