@@ -6,271 +6,189 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:51 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/09 20:00:40 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/20 20:16:00 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-unsigned int	shadows(unsigned int color, double y)
+void init_engine(t_eng *e, t_dataset *set)
 {
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-	double			intensity;
-
-	r = (color & 0x00FF0000) >> 16;
-	g = (color & 0x0000FF00) >> 8;
-	b = color & 0x000000FF;
-	intensity = 1 / y * 2;
-	if (intensity > 1.0)
-		intensity = 1.0;
-	r = r * intensity;
-	g = g * intensity;
-	b = b * intensity;
-	color = (r << 16) | (g << 8) | b;
-	return (color);
+	e->pos[X] = set->game->hero_pos.x,
+			e->pos[Y] = set->game->hero_pos.y;
+	e->dir[X] = set->game->hero_pos.dir_x;
+	e->dir[Y] = set->game->hero_pos.dir_y;
+	e->plane[X] = set->game->hero_pos.cam_plane_x;
+	e->plane[Y] = set->game->hero_pos.cam_plane_y;
+	e->pos_int[X] = (int) e->pos[X];
+	e->pos_int[Y] = (int) e->pos[Y];
 }
 
-static int	render_image(t_dataset *set)
+void calculate_ray(t_eng *e, t_dataset *set, int num)
 {
-	int	i;
-	/* player`s position vector*/
-	double posX = set->game->hero_pos.x, posY = set->game->hero_pos.y;
+	e->camera_x =
+			2 * num / (double) screen_width - 1; //x-coordinate in camera space
+	e->ray_dir_x = e->dir[X] + e->plane[X] * e->camera_x;
+	e->ray_dir_y = e->dir[Y] + e->plane[Y] * e->camera_x;
+	e->dist_d[X] = (e->ray_dir_x == 0) ? 1e30 : ft_abs(1 / e->ray_dir_x);
+	e->dist_d[Y] = (e->ray_dir_y == 0) ? 1e30 : ft_abs(1 / e->ray_dir_y);
+
+}
+
+void calculate_texture_side(t_eng *e)
+{
+	if (e->ray_dir_y < 0)
+		e->texture[Y] = NORTH_SIDE;
+	else
+		e->texture[Y] = SOUTH_SIDE;
+
+	if (e->ray_dir_x > 0)
+		e->texture[X] = EAST_SIDE;
+	else
+		e->texture[X] = WEST_SIDE;
+
+}
 
 
-	struct timeval stop, start;
-
-	/* player`s direction vector*/
-	double dirX = set->game->hero_pos.dir_x, dirY = set->game->hero_pos.dir_y;
-	/* camera`s plane vector */
-	double planeX = set->game->hero_pos.cam_plane_x, planeY = set->game->hero_pos.cam_plane_y;
-
-	t_img *picture = &set->rend->main_img;
-	char *data_address = set->rend->main_img.address;
-
-	for(int x = 0; x < screen_width; x++)
+void calculate_ray_step(t_eng *e, t_dataset *set)
+{
+	if (e->ray_dir_x < 0)
 	{
-
-		//calculate ray position and direction
-		double cameraX = 2 * x / (double)screen_width - 1; //x-coordinate in camera space
-		double rayDirX = dirX + planeX*cameraX;
-		double rayDirY = dirY + planeY*cameraX;
-
-		//which box of the map we're in
-		int mapX = (int) posX;
-		int mapY = (int) posY;
-
-		//length of ray from current position to next x or y-side
-		double sideDistX;
-		double sideDistY;
-
-		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = (rayDirX == 0) ? 1e30 : ft_abs(1 / rayDirX);
-		double deltaDistY = (rayDirY == 0) ? 1e30 : ft_abs(1 / rayDirY);
-		double wall_distance;
-
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; //was there a wall hit?
-		int side; //wich side NSWE
-
-		//calculate step and initial sideDist
-		if(rayDirX < 0)
-		{
-			stepX = -1;
-			sideDistX = (posX - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-		}
-		if(rayDirY < 0)
-		{
-			stepY = -1;
-			sideDistY = (posY - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-		}
-		//perform DDA
-		int x_texture;
-		int y_texture;
-
-		while (hit == 0)
-		{
-			if (rayDirY < 0)
-				y_texture = NORTH_SIDE;
-			else
-				y_texture = SOUTH_SIDE;
-
-			if (rayDirX > 0)
-				x_texture = EAST_SIDE;
-			else
-				x_texture = WEST_SIDE;
-
-			if(sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = x_texture;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = y_texture;
-			}
-			//Check if ray has hit a wall
-			if((set->game->map)[mapY][mapX] == '1')
-				hit = 1;
-		}
-
-		//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
-		if(side == x_texture) wall_distance = (sideDistX - deltaDistX);
-		else wall_distance = (sideDistY - deltaDistY);
-
-		//Calculate height of line to draw on screen
-		int lineHeight = (int)(screen_height / wall_distance);
-
-
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + screen_height / 2;
-		if(drawStart < 0) drawStart = 0;
-		int drawEnd = lineHeight / 2 + screen_height / 2;
-		if(drawEnd >= screen_height) drawEnd = screen_height - 1;
-
-
-		//calculate value of wallX
-		double wallX; //where exactly the wall was hit
-		if(side == x_texture)
-			wallX = -(posY + wall_distance * rayDirY);
-		else
-			wallX = posX + wall_distance * rayDirX;
-		wallX -= floor((wallX));
-
-		//x coordinate on the texture
-		int texX = (int) (wallX * (double) texWidth);
-//		if((side == NORTH_SIDE || side == SOUTH_SIDE) && rayDirX > 0)
-//			texX = texWidth - texX - 1;
-
-//		if((side == EAST_SIDE || side == WEST_SIDE) && rayDirY < 0)
-//			texX = texWidth - texX - 1;
-
-		// TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-		// How much to increase the texture coordinate per screen pixel
-		double step = 1.0 * texHeight / lineHeight;
-		// Starting texture coordinate
-		double texPos = (drawStart - (double)screen_height / 2 + (double)lineHeight / 2) * step;
-		t_img *img;
-		if (side == NORTH_SIDE)
-			img = &set->rend->north;
-		else if (side == WEST_SIDE)
-			img = &set->rend->west;
-		else if (side == EAST_SIDE)
-			img = &set->rend->east;
-		else
-			img = &set->rend->south;
-
-			for(int y = 0; y < screen_height; y++)
-			{
-
-				if (y >= drawStart && y <= drawEnd)
-				{
-					int texY = (int) texPos & (texHeight - 1);
-					texPos += step;
-					uint32_t color = get_pixel(img, texX,texY);
-					put_pixel(&set->rend->main_img, x, y, shadows(color,
-							wall_distance));
-				}
-				else
-					put_pixel(&set->rend->main_img, x, y, get_pixel
-					(&set->rend->back_img, x, y));
-			}
+		e->step[X] = -1;
+		e->side_dist[X] = (e->pos[X] - e->pos_int[X]) * e->dist_d[X];
+	} else
+	{
+		e->step[X] = 1;
+		e->side_dist[X] = (e->pos_int[X] + 1.0 - e->pos[X]) * e->dist_d[X];
 	}
-	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
+	if (e->ray_dir_y < 0)
+	{
+		e->step[Y] = -1;
+		e->side_dist[Y] = (e->pos[Y] - e->pos_int[Y]) * e->dist_d[Y];
+	} else
+	{
+		e->step[Y] = 1;
+		e->side_dist[Y] = (e->pos_int[Y] + 1.0 - e->pos[Y]) * e->dist_d[Y];
+	}
+}
+
+void calculate_crossover(t_eng *e, t_dataset *set)
+{
+	int hit;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (e->side_dist[X] < e->side_dist[Y])
+		{
+			e->side_dist[X] += e->dist_d[X];
+			e->pos_int[X] += e->step[X];
+			e->chosen_text = e->texture[X];
+		} else
+		{
+			e->side_dist[Y] += e->dist_d[Y];
+			e->pos_int[Y] += e->step[Y];
+			e->chosen_text = e->texture[Y];;
+		}
+		if ((set->game->map)[e->pos_int[Y]][e->pos_int[X]] == '1')
+			hit = 1;
+	}
+}
+
+void calculate_normale_ray(t_eng *e, t_dataset *set)
+{
+	if (e->chosen_text == e->texture[X])
+		e->wall_distance = (e->side_dist[X] - e->dist_d[X]);
+	else
+		e->wall_distance = (e->side_dist[Y] - e->dist_d[Y]);
+}
+
+void calculate_tex_mapping(t_eng *e)
+{
+	e->draw_start = -(e->line_height) / 2 + screen_height / 2;
+	if (e->draw_start < 0)
+		e->draw_start = 0;
+	e->draw_end = (e->line_height) / 2 + screen_height / 2;
+	if (e->draw_end >= screen_height)
+		e->draw_end = screen_height - 1;
+	if (e->chosen_text == e->texture[X])
+		e->wall_x = -(e->pos[Y] + e->wall_distance * e->ray_dir_y);
+	else
+		e->wall_x = (e->pos[Y] + e->wall_distance * e->ray_dir_x);
+	e->wall_x -= floor((e->wall_x));
+	e->tex[X] = (int) (e->wall_x * (double) texWidth);
+	e->tex_step = 1.0 * texHeight / e->line_height;
+	e->tex_pos = (e->draw_start - (double) screen_height / 2 +
+				  (double) e->line_height / 2) * e->tex_step;
+}
+
+t_img *choose_image(int side, t_dataset *set)
+{
+	if (side == NORTH_SIDE)
+		return (&set->rend->north);
+	else if (side == WEST_SIDE)
+		return (&set->rend->west);
+	else if (side == EAST_SIDE)
+		return (&set->rend->east);
+	else
+		return (&set->rend->south);
+}
+
+static int render_image(t_dataset *set)
+{
+	t_eng e;
+
+	init_engine(&e, set);
+
+	for (int x = 0; x < screen_width; x++)
+	{
+		calculate_ray(&e, set, x);
+		calculate_ray_step(&e, set);
+		calculate_texture_side(&e);
+		calculate_crossover(&e, set);
+		calculate_normale_ray(&e, set);
+		e.line_height = (int) (screen_height / e.wall_distance);
+		calculate_tex_mapping(&e);
+		e.image = choose_image(e.chosen_text, set);
+		for (int y = 0; y < screen_height; y++)
+		{
+
+			if (y >= e.draw_start && y <= e.draw_end)
+			{
+				int texY = (int) e.tex_pos & (texHeight - 1);
+				e.tex_pos += e.tex_step;
+				uint32_t color = get_pixel(e.image, e.tex[X], e.tex[Y]);
+				put_pixel(&set->rend->main_img, x, y, color;
+			} else
+				put_pixel(&set->rend->main_img, x, y, get_pixel
+						(&set->rend->back_img, x, y));
+		}
+	}
+	mlx_put_image_to_window(set->rend->mlx, set->rend->win,
+							(set->rend->main_img.img), 0, 0);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->fire
-	.img[set->rend->fire.i].img, -200, 0);
+			.img[set->rend->fire.i].img, -200, 0);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->minimap
-	.img, screen_width - set->game->map_width * 8, screen_height -
-	set->game->map_height
-	* 8);
+			.img, screen_width - set->game->map_width * 8, screen_height -
+														   set->game->map_height
+														   * 8);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->game->hero.img,
-		screen_width - 8 * set->game->map_width + (int)(set->game->hero_pos.x * 8)
-		- 1,
-		screen_height - 8 * set->game->map_height + (int)(set->game->hero_pos.y *
-		8) -
-		1);
+							screen_width - 8 * set->game->map_width +
+							(int) (set->game->hero_pos.x * 8)
+							- 1,
+							screen_height - 8 * set->game->map_height +
+							(int) (set->game->hero_pos.y *
+								   8) -
+							1);
 	set->rend->fire.i++;
 	if (set->rend->fire.i == 20)
 		set->rend->fire.i = 0;
-	while (i++ < 10000)
-		 ;
-
-
-
-//	//timing for input and FPS counter
-//	oldTime = time;
-//	time = getTicks();
-//	double frameTime = (time - oldTime) / 1000.0; //frametime is the time this frame has taken, in seconds
-//	print(1.0 / frameTime); //FPS counter
-//	redraw();
-
-	//speed modifiers
-//	double moveSpeed = 100 * 5.0; //the constant value is in squares/second
-//	double rotSpeed = 100 * 3.0; //the constant value is in radians/second
-//
-//	readKeys();
-//	//move forward if no wall in front of you
-//	if(keyDown(SDLK_UP))
-//	{
-//		if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
-//		if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
-//	}
-//	//move backwards if no wall behind you
-//	if(keyDown(SDLK_DOWN))
-//	{
-//		if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
-//		if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
-//	}
-//	//rotate to the right
-//	if(keyDown(SDLK_RIGHT))
-//	{
-//		//both camera direction and camera plane must be rotated
-//		double oldDirX = dirX;
-//		dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-//		dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-//		double oldPlaneX = planeX;
-//		planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-//		planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-//	}
-//	//rotate to the left
-//	if(keyDown(SDLK_LEFT))
-//	{		return (&rend->wall);
-
-//		//both camera direction and camera plane must be rotated
-//		double oldDirX = dirX;
-//		dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-//		dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-//		double oldPlaneX = planeX;
-//		planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-//		planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-//	}
-//	if(keyDown(SDLK_ESCAPE))
-//	{
-//		break;
-//	}
 	return (1);
 }
 
-int	game_loop(t_dataset *set)
+int game_loop(t_dataset *set)
 {
-	t_rend	*r;
+	t_rend *r;
 
 	(void) set;
 	movement_processor(set);
