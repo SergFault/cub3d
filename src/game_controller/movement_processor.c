@@ -55,8 +55,8 @@ static int	check_mouse(t_dataset *set)
 	int	x;
 	int	move;
 
+	mlx_mouse_get_pos(set->rend->win, &x, &move);
 	move = 0;
-	mlx_mouse_get_pos(set->rend->win, &x, NULL);
 	if (x < (screen_width / 2 - 1))
 	{
 		move = 1;
