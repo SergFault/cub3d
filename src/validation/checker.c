@@ -75,7 +75,6 @@ static int	check_walls(char  **map, t_game *game)
 {
 	int 	i;
 	int		j;
-	char	*line;
 
 	i = 0;
 	j = 0;

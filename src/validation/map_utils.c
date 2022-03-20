@@ -14,8 +14,8 @@
 
 void get_minimap_size(char **map, t_rend *rend)
 {
-	int	max_length;
-	int	size;
+	size_t	max_length;
+	int		size;
 
 	max_length = 0;
 	size = 0;

@@ -48,57 +48,79 @@ static int is_valid_color_pattern(char *str)
 	return (0);
 }
 
-void parse_colors(char *pattern, int *rgb)
+void skip_num_comma(char **pattern)
 {
-	rgb[0] = ft_atoi(pattern);
-	rgb[1] = ft_atoi(pattern + 4);
-	rgb[2] = ft_atoi(pattern + 8);
+	while (*pattern && ft_is_digit(**pattern))
+		(*pattern)++;
+	if (*pattern && **pattern == ',')
+		(*pattern)++;
 }
 
-int ft_is_color_data(t_list *line, int have_color[2], t_dataset *set)
+
+int correct_colors(int color1, int color2, int color3)
+{
+	return ((color1 < 256 && color1 >=0)
+			&& (color2 < 256 && color2 >=0)
+			&& (color3 < 256 && color3 >=0));
+}
+
+int parse_colors(char *pattern, t_dataset *set, int side)
+{
+	if (side == CEIL)
+	{
+		if (set->ceiling_rgb[0] != -1)
+			return (0);
+		set->ceiling_rgb[0] = ft_atoi(pattern);
+		skip_num_comma(&pattern);
+		set->ceiling_rgb[1] = ft_atoi(pattern);
+		skip_num_comma(&pattern);
+		set->ceiling_rgb[2] = ft_atoi(pattern);
+		if (!correct_colors(set->ceiling_rgb[0], set->ceiling_rgb[1], set->ceiling_rgb[2]))
+			return (0);
+	}
+	if (side == FLOOR)
+	{
+		if (set->floor_rgb[0] != -1)
+			return (0);
+		set->floor_rgb[0] = ft_atoi(pattern);
+		skip_num_comma(&pattern);
+		set->floor_rgb[1] = ft_atoi(pattern);
+		skip_num_comma(&pattern);
+		set->floor_rgb[2] = ft_atoi(pattern);
+		if (!correct_colors(set->floor_rgb[0], set->floor_rgb[1], set->floor_rgb[2]))
+			return (0);
+	}
+	return (1);
+}
+
+static int parse_color_data(t_list *line, t_dataset *set)
 {
 	char *line_str;
-	int rgb[3];
 
-	arr_to_zero(rgb, 3);
 	line_str = (char *) (line->content);
 	if (line_str[0] == '\0')
 		return (1);
 	if (ft_strncmp(line_str, "F ", 2) == 0 &&
 		is_valid_color_pattern(line_str + 2))
 	{
-		parse_colors(line_str + 2, rgb);
-		have_color[HAVE_FLOOR] = YES;
-		set_rgb_arr(rgb, set->floor_rgb);
-		set->floor_color = convert_rgb(set->floor_rgb);
-		return (1);
+		return parse_colors(line_str + 2, set, FLOOR);
 	}
 	else if (ft_strncmp(line_str, "C ", 2) == 0)
 	{
-		parse_colors(line_str + 2, rgb);
-		have_color[HAVE_CEIL] = YES;
-		set_rgb_arr(rgb, set->ceiling_rgb);
-		set->ceiling_color = convert_rgb(set->ceiling_rgb);
-		return (1);
+		return parse_colors(line_str + 2, set, CEIL);
 	}
 	return (0);
 }
 
-static int have_all_colors(int sides[2])
-{
-	if (sides[0] && sides[1])
-		return (1);
-	return (0);
-}
 
 int check_n_skip_colors(t_list **list, t_dataset *set)
 {
-	int colors_complete_flag[2];
-
-	arr_to_zero(colors_complete_flag, 2);
-	while (*list && ft_is_color_data(*list, colors_complete_flag, set))
+	if (parse_color_data(*list, set))
+	{
 		*list = (*list)->next;
-	if (have_all_colors(colors_complete_flag))
+		set->floor_color = convert_rgb(set->floor_rgb);
+		set->ceiling_color = convert_rgb(set->ceiling_rgb);
 		return (1);
+	}
 	return (0);
 }

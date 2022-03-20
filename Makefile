@@ -2,7 +2,7 @@ STD_MAP		=	map.cub
 SMALL_MAP	=	map1.ber
 NAME 		=	cub3d
 CC			=	clang
-FLAGS		=	-g #-Wall -Wextra -Werror -std=c99  #-fsanitize=leak \
+FLAGS		=	-g #-Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
 FLAGS 		+= -MMD -MP
 -fsanitize=address
 LIB_BIN		=	mlx-linux/libmlx_Linux.a
@@ -51,6 +51,8 @@ SRC			=	src/main.c \
 				src/utils/ft_str_cons_only.c \
 				src/validation/checker_map_content.c \
 				src/validation/check_n_skip_colors.c \
+				src/validation/skip_count_spaces.c \
+                src/validation/have_all_meta_data.c \
 				src/validation/check_n_skip_map.c \
 				src/utils/ft_no_spaces.c
 

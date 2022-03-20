@@ -13,7 +13,7 @@
 #include "cub3d.h"
 #include <stdio.h>
 
-unsigned int	convert_rgb(const unsigned char rgb[3])
+unsigned int	convert_rgb(const int rgb[3])
 {
 	unsigned int	color;
 

@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dup_spaces.c                                    :+:      :+:    :+:   */
+/*   have_all_meta_data.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/17 13:31:04 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/17 13:54:37 by Sergey           ###   ########.fr       */
+/*   Created: 2022/03/20 12:22:31 by Sergey            #+#    #+#             */
+/*   Updated: 2022/03/20 12:23:04 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char	*ft_dup_spaces(size_t size)
+int have_all_meta_data(t_dataset *set)
 {
-	char	*dup;
-	size_t	i;
-
-	i = 0;
-	dup = (char *)malloc(sizeof(char) * (size + 1));
-	if (!(dup))
-		return (0);
-	while (i < size)
-		dup[i++] = ' ';
-	dup[i] = '\0';
-	return (dup);
+	return ((set->path_south != NULL)
+			&& (set->path_north != NULL)
+			&& (set->path_west != NULL)
+			&& (set->path_east != NULL)
+			&& (set->ceiling_rgb[0] != -1)
+			&& (set->floor_rgb[0] != -1));
 }

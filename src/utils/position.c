@@ -17,7 +17,7 @@ static t_coordinates empty_coordinates(void)
 	t_coordinates coordinates;
 
 	coordinates.x = 0;
-	coordinates.y = 0;
+	coordinates.y = 0.5;
 	coordinates.dir_x = 0;
 	coordinates.dir_y = 0;
 	coordinates.cam_plane_x = 0;
@@ -61,6 +61,8 @@ t_coordinates define_position(char ch, t_coordinates coor)
 		coor.cam_plane_x = -1;
 		coor.cam_plane_y = 0;
 	}
+	//coor.x += 0.5;
+	//coor.y += 0.5;
 	return coor;
 }
 
@@ -71,7 +73,7 @@ t_coordinates get_pos(t_game *game)
 	pos = empty_coordinates();
 	while (pos.y < game->map_height)
 	{
-		pos.x = 0;
+		pos.x = 0.5;
 		while (pos.x < game->map_width)
 		{
 			if ((game->map[(int) pos.y][(int) pos.x] == 'E')

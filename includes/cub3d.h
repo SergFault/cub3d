@@ -1,6 +1,8 @@
 #ifndef _CUB3D_H_
 #define _CUB3D_H_
 
+#include <stdio.h>/////
+
 #define screen_width 1200
 #define screen_height 600
 #define texWidth 1024
@@ -41,8 +43,8 @@
 # define WEST_SIDE 2
 # define EAST_SIDE 3
 # define WALL_GAP 0.1
-# define HAVE_CEIL 0
-# define HAVE_FLOOR 1
+# define CEIL 0
+# define FLOOR 1
 # define YES 1
 # define NO 0
 # define MV_SPEED 0.12
@@ -97,7 +99,6 @@ typedef struct s_rend
 	t_img	north;
 	t_img	south;
 	int		i;
-	t_img	wall[10];
 }				t_rend;
 
 typedef struct s_coordinates
@@ -150,8 +151,8 @@ typedef struct s_dataset{
 	char	*path_west;
 	char	*path_north;
 	char	*path_south;
-	unsigned char	floor_rgb[3];
-	unsigned char	ceiling_rgb[3];
+	int		floor_rgb[3];
+	int		ceiling_rgb[3];
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
 	double	k[256];
@@ -165,7 +166,7 @@ void	game_init(t_game *game);
 size_t	ft_strlen(const char *s);
 int	ft_sj_ff_dt(const char *s1, const char *s2, char **dest);
 int	ft_strdup_free(const char *s1, char **dest);
-static int	read_fd(char **line, char *buffer[], char **cache, int fd);
+//static int	read_fd(char **line, char *buffer[], char **cache, int fd);
 int	map_init(t_dataset *set, char *argv);
 void	ft_lst_del_str(void *str);
 void	ft_lstadd_back(t_list **lst, t_list *new);
@@ -207,15 +208,17 @@ int	ft_str_cons_only_chars(char *str, char *str_ch);
 int	ft_is_space(char ch);
 int check_n_skip_map(t_list **line_lst, t_dataset *set);
 int	ft_atoi(const char *str);
-void	set_rgb_arr(const int *src, unsigned char dst[3]);
+//void	set_rgb_arr(const int *src, int *dst);
 char	**str_lines_to_arr(t_list *lines, t_game *game);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_dup_spaces(size_t size);
 void	free_textures_paths(t_dataset *set);
 t_coordinates	get_pos(t_game *game);
-unsigned int	convert_rgb(const unsigned char rgb[3]);
+unsigned int	convert_rgb(const int rgb[3]);
 unsigned int	calc_shadows(unsigned int color, int y, double k[256]);
 void	fill_bg_img(t_dataset *set);
+int skip_spaces(char **str);
+int have_all_meta_data(t_dataset *set);
 
 
 
