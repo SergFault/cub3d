@@ -220,6 +220,7 @@ unsigned int	calc_shadows(unsigned int color, int y, double k[256]);
 void	fill_bg_img(t_dataset *set);
 int skip_spaces(char **str);
 int have_all_meta_data(t_dataset *set);
+int		process_mouse(int x, int y, t_dataset *set);
 
 
 

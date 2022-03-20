@@ -44,7 +44,7 @@ void init_data(t_dataset *set)
 	i = 0;
 	while (i < 256)
 	{
-		set->k[i] = tan((double)(i * (screen_height / 256)) / 650);
+		set->k[i] = tan((double)(i * ((double)screen_height / 256)) / 650);
 		i++;
 	}
 	set->rend->i = 0;

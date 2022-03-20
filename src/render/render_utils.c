@@ -10,20 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-//#include <bits/stdint-uintn.h>
 #include "cub3d.h"
-#include "mlx.h"
-#include <sys/time.h>
 
-//t_img	*get_img(t_rend *rend, char ch)
-//{
-//	if (ch == WALL_CH)
-//		return (&rend->wall);
-//	return (&rend->wall);
-//}
-
-unsigned int	shadows(unsigned int color, double y)//, double k[256])
+unsigned int	shadows(unsigned int color, double y)
 {
 	unsigned char	r;
 	unsigned char	g;
@@ -45,6 +34,7 @@ unsigned int	shadows(unsigned int color, double y)//, double k[256])
 
 static int	render_image(t_dataset *set)
 {
+	int	i;
 	/* player`s position vector*/
 	double posX = set->game->hero_pos.x, posY = set->game->hero_pos.y;
 
@@ -192,29 +182,15 @@ static int	render_image(t_dataset *set)
 
 				if (y >= drawStart && y <= drawEnd)
 				{
-					// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 					int texY = (int) texPos & (texHeight - 1);
 					texPos += step;
-//					uint32_t color = get_pixel(img, texX, texY);
-
-					uint32_t color = get_pixel(img, texX,
-						texY);
-					//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-//					if (side == 1) color = (color >> 1) & 8355711;
-						put_pixel(&set->rend->main_img, x, y, shadows(color,
-							wall_distance));}
+					uint32_t color = get_pixel(img, texX,texY);
+					put_pixel(&set->rend->main_img, x, y, shadows(color,
+							wall_distance));
+				}
 				else
 					put_pixel(&set->rend->main_img, x, y, get_pixel
 					(&set->rend->back_img, x, y));
-//				else
-//				{
-//					if (y >= screen_height / 2)
-//						put_pixel(&set->rend->main_img, x, y, //set->floor_color);
-//						calc_shadows(set->floor_color, y, set->k));
-//					else
-//						put_pixel(&set->rend->main_img, x, y, //set->ceiling_color);
-//							calc_shadows(set->ceiling_color, y, set->k));
-//				}
 			}
 	}
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win, (set->rend->main_img.img), 0, 0);
@@ -230,14 +206,11 @@ static int	render_image(t_dataset *set)
 		screen_height - 8 * set->game->map_height + (int)(set->game->hero_pos.y *
 		8) -
 		1);
-//	set->rend->i++;
-	if (set->rend->i == 10)
-		set->rend->i = 0;
 	set->rend->fire.i++;
 	if (set->rend->fire.i == 20)
 		set->rend->fire.i = 0;
-	int i = 0;
 	while (i++ < 10000)
+		 ;
 
 
 
