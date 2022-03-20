@@ -47,7 +47,6 @@ char	*ft_itoa(int n)
 		num = -n;
 	rank = ft_rank(num) + sign;
 	ret = (char *)malloc(sizeof(char) * (rank + 1));
-	//todo error handling
 	ret[rank] = '\0';
 	while (num > 9)
 	{

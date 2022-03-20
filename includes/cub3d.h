@@ -104,6 +104,32 @@ typedef struct s_rend
 	int		i;
 }				t_rend;
 
+typedef struct s_eng
+{
+	int	i;
+	int		pos_int[2]; //map_x
+	int		step[2];
+	int		texture[2];
+	int 	chosen_text;
+	double pos[2];
+	double dir[2];
+	double plane[2];
+	double dist_d[2];
+	double side_dist[2];
+	double camera_x;
+	double ray_dir_x;
+	double ray_dir_y;
+	double wall_distance;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	double 	wall_x;
+	int 	tex[2];
+	double tex_step;
+	double tex_pos;
+	t_img 	*image;
+}				t_eng;
+
 typedef struct s_coordinates
 {
 	double	x;
