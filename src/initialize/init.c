@@ -47,8 +47,8 @@ void	init_data(t_dataset *set)
 		i++;
 	}
 	set->rend->i = 0;
-	set->game->map_width = 0;
-	set->game->map_height = 0;
+	set->game->map_w = 0;
+	set->game->map_h = 0;
 	set->game->map = NULL;
 }
 
@@ -62,7 +62,7 @@ static int	init_model(void *mlx, t_img img[10], char *path)
 	return (1);
 }
 
-int	init_fire(void *mlx, t_fire *fire)
+static int	init_fire(void *mlx, t_fire *fire)
 {
 	char	*path;
 	int		res;
@@ -104,7 +104,7 @@ int	rend_init(t_dataset *set)
 			&set->rend->back_img.bpp, &set->rend->back_img.line_length,
 			&set->rend->back_img.endian);
 	set->rend->minimap.img = mlx_new_image(set->rend->mlx,
-			set->game->map_width * 8, set->game->map_height * 8);
+			set->game->map_w * 8, set->game->map_h * 8);
 	set->rend->minimap.address = mlx_get_data_addr(set->rend->minimap.img,
 			&set->rend->minimap.bpp, &set->rend->minimap.line_length,
 			&set->rend->minimap.endian);

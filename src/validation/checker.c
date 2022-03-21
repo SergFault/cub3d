@@ -51,7 +51,7 @@ static int	check_chars(char **map, int map_width, int map_height)
 static int	have_bad_neighbor(char **map, int y, int x, t_game *game)
 {
 	if (y <= 0 || x <= 0
-		|| y >= game->map_height - 1 || x >= game->map_width - 1)
+		|| y >= game->map_h - 1 || x >= game->map_w - 1)
 		return (1);
 	if (map[y - 1][x] == SPACE_CH || map[y + 1][x] == SPACE_CH
 		|| map[y][x - 1] == SPACE_CH || map[y][x + 1] == SPACE_CH)
@@ -85,7 +85,7 @@ int	validate_map(char **map, t_game *game)
 {
 	if (!(check_map_content(map))
 		|| !(check_walls(map, game))
-		|| !check_chars(map, game->map_width, game->map_height))
+		|| !check_chars(map, game->map_w, game->map_h))
 		return (0);
 	return (1);
 }

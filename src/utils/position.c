@@ -73,10 +73,10 @@ t_coordinates	get_pos(t_game *game)
 	t_coordinates	pos;
 
 	pos = empty_coordinates();
-	while (pos.y < game->map_height)
+	while (pos.y < game->map_h)
 	{
 		pos.x = 0.5;
-		while (pos.x < game->map_width)
+		while (pos.x < game->map_w)
 		{
 			if ((game->map[(int) pos.y][(int) pos.x] == 'E')
 					|| (game->map[(int) pos.y][(int) pos.x] == 'W')

@@ -39,14 +39,14 @@ static void	count_lines_and_chars(t_list *lines, t_game *game)
 {
 	int	tmp;
 
-	game->map_width = 0;
-	game->map_height = 0;
+	game->map_w = 0;
+	game->map_h = 0;
 	while (lines)
 	{
-		game->map_height += 1;
+		game->map_h += 1;
 		tmp = ft_strlen((char *)lines->content);
-		if (tmp > game->map_width)
-			game->map_width = tmp;
+		if (tmp > game->map_w)
+			game->map_w = tmp;
 		lines = lines->next;
 	}
 }
@@ -59,7 +59,7 @@ char	**str_lines_to_arr(t_list *lines, t_game *game)
 
 	start = lines;
 	count_lines_and_chars(lines, game);
-	str_arr = (char **) malloc((sizeof (char *)) * (game->map_height + 1));
+	str_arr = (char **) malloc((sizeof (char *)) * (game->map_h + 1));
 	if (str_arr == NULL)
 		return (ft_error_null(MEM_ERR));
 	i = 0;

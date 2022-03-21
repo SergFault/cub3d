@@ -14,7 +14,7 @@
 
 static int	max_width(t_list *lines)
 {
-	int	width;
+	size_t	width;
 
 	width = 0;
 	while (lines)
@@ -26,7 +26,7 @@ static int	max_width(t_list *lines)
 	return (width);
 }
 
-void	write_end(t_list *lines, int width)
+void	write_end(t_list *lines, size_t width)
 {
 	char	*end;
 	char	*temp;

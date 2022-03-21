@@ -49,7 +49,7 @@ static void	fill_minimap(t_img	*minimap, t_game *game)
 	int	j;
 
 	y = 0;
-	while (y < game->map_height)
+	while (y < game->map_h)
 	{
 		x = 0;
 		while (game->map[y][x])

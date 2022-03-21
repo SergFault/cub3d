@@ -1,4 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rstepani <rstepani@student.21-school.ru    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/09 21:33:00 by rstepani          #+#    #+#             */
+/*   Updated: 2022/03/15 19:21:42 by rstepani         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
+
+static int	game_loop(t_dataset *set)
+{
+	(void) set;
+	movement_processor(set);
+	render_image(set);
+	return (1);
+}
 
 static int	init(t_dataset *set, char *argv)
 {

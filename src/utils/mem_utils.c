@@ -25,7 +25,7 @@ void	free_data(t_dataset *set)
 	int	cnt;
 
 	cnt = 0;
-	while (cnt < set->game->map_height)
+	while (cnt < set->game->map_h)
 	{
 		free(set->game->map[cnt++]);
 	}

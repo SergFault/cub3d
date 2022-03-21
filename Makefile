@@ -2,7 +2,7 @@ STD_MAP		=	map.cub
 SMALL_MAP	=	map1.ber
 NAME 		=	cub3d
 CC			=	clang
-FLAGS		=	-g #-Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
+FLAGS		=	-g -Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
 FLAGS 		+= -MMD -MP
 -fsanitize=address
 LIB_BIN		=	libmlx.dylib
@@ -49,12 +49,13 @@ SRC			=	src/main.c \
 				src/game_controller/check_coordinate.c \
 				src/game_controller/move_processor.c \
 				src/render/render_utils.c \
+				src/render/render_calculations.c \
 				src/render/draw_utils.c \
-				src/render/draw_utils_2.c \
 				src/render/fill_background.c \
 				src/utils/ft_str_cons_only.c \
 				src/validation/checker_map_content.c \
 				src/validation/check_n_skip_colors.c \
+				src/validation/check_n_skip_colors_2.c \
 				src/validation/skip_count_spaces.c \
                 src/validation/have_all_meta_data.c \
 				src/validation/check_n_skip_map.c \
