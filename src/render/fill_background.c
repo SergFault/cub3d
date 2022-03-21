@@ -59,8 +59,7 @@ static void	fill_minimap(t_img	*minimap, t_game *game)
 			{
 				j = 0;
 				while (j < 8)
-					put_pixel(minimap, x * 8 + i, y * 8 + j++, 0xFFFFFFFF
-						- 0x22000000
+					put_pixel(minimap, x * 8 + i, y * 8 + j++, 0x00FF0000
 						* ((game->map[y][x] != '1' && game->map[y][x] != ' ')));
 				i++;
 			}

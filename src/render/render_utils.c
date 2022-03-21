@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:51 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 20:16:00 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/21 16:32:49 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static void	put_images_to_window(t_dataset *set)
 {
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win,
 		(set->rend->main_img.img), 0, 0);
-	mlx_put_image_to_window(set->rend->mlx, set->rend->win, set->rend->fire
-		.img[set->rend->fire.i].img, -200, 0);
+	img_on_img(&set->rend->main_img, &set->rend->fire
+			.img[set->rend->fire.i], -250, 0);
 	mlx_put_image_to_window(set->rend->mlx, set->rend->win,
 		set->rend->minimap.img, W_RES - set->game->map_w * 8,
 		H_RES - set->game->map_h * 8);

@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:31 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 19:17:39 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/21 15:27:09 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	process_key_pressed(int key, t_dataset *set)
 		set->game->hero_pos.move_front = 1;
 	if (key == DOWN)
 		set->game->hero_pos.move_back = 1;
-	if (key == 123)
+	if (key == TURN_LEFT)
 		set->game->hero_pos.turn_left = 1;
-	if (key == 124)
+	if (key == TURN_RIGHT)
 		set->game->hero_pos.turn_right = 1;
 	if (key == RIGHT)
 		set->game->hero_pos.move_right = 1;
@@ -39,9 +39,9 @@ int	process_key_released(int key, t_dataset *set)
 		set->game->hero_pos.move_front = 0;
 	if (key == DOWN)
 		set->game->hero_pos.move_back = 0;
-	if (key == 123)
+	if (key == TURN_LEFT)
 		set->game->hero_pos.turn_left = 0;
-	if (key == 124)
+	if (key == TURN_RIGHT)
 		set->game->hero_pos.turn_right = 0;
 	if (key == RIGHT)
 		set->game->hero_pos.move_right = 0;

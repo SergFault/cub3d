@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:40 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/21 14:06:15 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/21 14:41:40 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ static int	init_fire(void *mlx, t_fire *fire)
 	{
 		fire->img[fire->i].img = mlx_xpm_file_to_image(mlx, path,
 				&(fire->img[fire->i].width), &(fire->img[fire->i].height));
+		fire->img[fire->i].address = mlx_get_data_addr(fire->img[fire->i].img, &fire->img[fire->i].bpp,
+										 & fire->img[fire->i].line_length, &fire->img[fire->i].endian);
 		if (fire->img[fire->i].img)
 			res++;
 		fire->i++;

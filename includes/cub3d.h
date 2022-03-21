@@ -6,7 +6,7 @@
 /*   By: rstepani <rstepani@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 21:33:00 by rstepani          #+#    #+#             */
-/*   Updated: 2022/03/15 19:21:42 by rstepani         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:44:42 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 # include <fcntl.h>
 # include "mlx.h"
 
+# define FIRE_SCALE 800
 # define W_RES 1200
 # define H_RES 600
-# define TEX_W 1024
-# define TEX_H 1024
+# define TEX_W 64
+# define TEX_H 64
 # define BUFFER_SIZE 40
 # define VALID_CHARS "01NSEW "
 
@@ -40,11 +41,15 @@
 # define ARGS_ERROR "Error\nNumber of arguments is incorrect.\n"
 # define TEXTURES_INIT_ERROR "Error\nInvalid textures file or doesn`t exits.\n"
 
-# define ESC 53
-# define LEFT 0
-# define UP 13
-# define RIGHT 2
-# define DOWN 1
+# define ESC 65307
+# define LEFT 97
+# define UP 119
+# define RIGHT 100
+# define TURN_RIGHT 65363
+# define TURN_LEFT 65361
+# define TRANSPARENCY 0xFF000000
+
+# define DOWN 115
 # define NORTH_SIDE 0
 # define SOUTH_SIDE 1
 # define WEST_SIDE 2
@@ -53,6 +58,19 @@
 # define FLOOR 1
 # define MV_SPEED 0.03
 # define RT_SPEED 0.07
+
+typedef struct s_draw_data
+{
+	int		x;
+	int		y;
+	float	off_x;
+	float	off_y;
+	int		s_x;
+	int		s_y;
+	int		d_x;
+	int		d_y;
+	int		color;
+}				t_draw_data;
 
 typedef struct s_list
 {
@@ -231,5 +249,6 @@ void			calculate_texture_side(t_eng *e);
 void			calculate_ray_step(t_eng *e);
 void			calculate_crossover(t_eng *e, t_dataset *set);
 void			calculate_normale_ray(t_eng *e);
+void			img_on_img(t_img *img, t_img *s_img, int startX, int startY);
 
 #endif
