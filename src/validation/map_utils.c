@@ -16,16 +16,22 @@ static int	gnl_map(int fd, t_list **lines)
 {
 	int		read_flag;
 	char	*line;
+	int		i;
 
 	line = NULL;
 	read_flag = 1;
+	i = 0;
 	while (read_flag)
 	{
 		read_flag = get_next_line(fd, &line);
-		if (read_flag == -1)
+		if (read_flag)
+			i++;
+		if (read_flag == -1 || !i)
 		{
+			if (line && !i)
+				free(line);
 			ft_lstclear(lines, ft_lst_del_str);
-			ft_putstr_fd(BAD_FILE, 1);
+			ft_putstr_fd(BAD_FILE, 2);
 			close(fd);
 			return (-1);
 		}
