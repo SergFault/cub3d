@@ -6,7 +6,7 @@
 /*   By: rstepani <rstepani@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 21:33:00 by rstepani          #+#    #+#             */
-/*   Updated: 2022/03/15 19:21:42 by rstepani         ###   ########.fr       */
+/*   Updated: 2022/03/21 14:05:20 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv)
 		mlx_hook(rend.win, 2, (1L << 0), process_key_pressed, &set);
 		mlx_hook(set.rend->win, 3, (1L << 1), process_key_released, &set);
 		mlx_hook(set.rend->win, 17, 1L << 17, &leave_game, &set);
-		mlx_mouse_hide();
+		mlx_mouse_hide(set.rend->mlx, set.rend->win);
 		mlx_loop_hook(rend.mlx, game_loop, &set);
 		mlx_loop(rend.mlx);
 	}

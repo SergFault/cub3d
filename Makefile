@@ -5,9 +5,9 @@ CC			=	clang
 FLAGS		=	-g -Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
 FLAGS 		+= -MMD -MP
 -fsanitize=address
-LIB_BIN		=	libmlx.dylib
-MLX_DIR		=	minilibx_mms_20200219
-LIB			=	-L. -lmlx -framework OpenGL -framework AppKit
+LIB_BIN		=	libmlx_Linux.a
+MLX_DIR		=	minilibx
+LIB			=	-L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
 INCLUDES	=	includes/
 HEADER		=	includes/cub3d.h
 SRC			=	src/main.c \

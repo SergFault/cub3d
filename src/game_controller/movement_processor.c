@@ -6,7 +6,7 @@
 /*   By: Sergey <mrserjy@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:42:57 by Sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 19:08:13 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/21 14:07:26 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	check_mouse(t_dataset *set)
 	int	x;
 	int	move;
 
-	mlx_mouse_get_pos(set->rend->win, &x, &move);
+	mlx_mouse_get_pos(set->rend->mlx ,set->rend->win, &x, &move);
 	move = 0;
 	if (x < (W_RES / 2 - 1))
 	{
@@ -67,7 +67,7 @@ static int	check_mouse(t_dataset *set)
 		move = 1;
 		set->game->hero_pos.turn_right = 1;
 	}
-	mlx_mouse_move(set->rend->win, W_RES / 2, 0);
+	mlx_mouse_move(set->rend->mlx ,set->rend->win, W_RES / 2, 0);
 	return (move);
 }
 

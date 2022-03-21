@@ -6,7 +6,7 @@
 /*   By: sergey <sergey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:27:40 by sergey            #+#    #+#             */
-/*   Updated: 2022/03/20 19:20:09 by Sergey           ###   ########.fr       */
+/*   Updated: 2022/03/21 14:06:15 by Sergey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,12 @@ void	init_data(t_dataset *set)
 
 static int	init_model(void *mlx, t_img img[10], char *path)
 {
-	img->img = mlx_png_file_to_image(mlx, path, &(img->width), &(img->height));
+	img->img = mlx_xpm_file_to_image(mlx, path, &(img->width), &(img->height));
 	if (!img->img)
-		return ((int)ft_error_null(TEXTURES_INIT_ERROR));
+	{
+		ft_error_null(TEXTURES_INIT_ERROR);
+		return (0);
+	}
 	img->address = mlx_get_data_addr(img->img, &img->bpp, &img->line_length,
 			&img->endian);
 	return (1);
@@ -67,14 +70,14 @@ static int	init_fire(void *mlx, t_fire *fire)
 	char	*path;
 	int		res;
 
-	path = ft_strdup("textures/fire/0000.png");
+	path = ft_strdup("textures/fire/0000.xpm");
 	if (!path)
 		return (0);
 	fire->i = 0;
 	res = 0;
 	while (fire->i < 20)
 	{
-		fire->img[fire->i].img = mlx_png_file_to_image(mlx, path,
+		fire->img[fire->i].img = mlx_xpm_file_to_image(mlx, path,
 				&(fire->img[fire->i].width), &(fire->img[fire->i].height));
 		if (fire->img[fire->i].img)
 			res++;

@@ -66,6 +66,6 @@ int	process_mouse(int x, int y, t_dataset *set)
 		set->game->hero_pos.turn_left = 0;
 		set->game->hero_pos.turn_right = 0;
 	}
-	mlx_mouse_move(set->rend->win, W_RES / 2, 0);
+	mlx_mouse_move(set->rend->mlx, set->rend->win, W_RES / 2, 0);
 	return (0);
 }

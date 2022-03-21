@@ -1,7 +1,7 @@
-NO ./textures/0.png
-SO ./textures/1.png
-WE ./textures/2.png
-EA ./textures/3.png
+NO ./textures/eagle.xpm
+SO ./textures/redbrick.xpm
+WE ./textures/stone.xpm
+EA ./textures/wood.xpm
 
 F 060,000,000
 C 090,060,060
