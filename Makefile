@@ -1,10 +1,6 @@
-STD_MAP		=	map.cub
-SMALL_MAP	=	map1.ber
 NAME 		=	cub3d
 CC			=	clang
-FLAGS		=	-g -Wall -Wextra -Werror #-std=c99  #-fsanitize=leak \
-FLAGS 		+= -MMD -MP
--fsanitize=address
+FLAGS		=	-Wall -Wextra -Werror
 LIB_BIN		=	libmlx.dylib
 MLX_DIR		=	minilibx_mms_20200219
 LIB			=	-L. -lmlx -framework OpenGL -framework AppKit
@@ -75,33 +71,16 @@ $(LIB_BIN):
 			make -C $(MLX_DIR)
 			cp $(MLX_DIR)/$(LIB_BIN) $(LIB_BIN)
 
+bonus:		$(NAME)
+
 clean:
 			make -C $(MLX_DIR) clean
 			rm -f $(OBJS)
-			rm -f $(OBJ_M)
-			rm -f $(OBJ_B)
-			rm -f valgrind-out.txt
 
 fclean:		clean
-			make -C $(MLX_DIR) clean
 			rm -f $(LIB_BIN)
 			rm -f $(NAME)
 
 re:			fclean all
 
-
-deps.mk: 	$(SRC_B) $(SRC)
-			$(CC) -MM -I$(INCLUDES) $^ > $@
-
-val:		${NAME}
-			valgrind \
-			--leak-check=full \
-			--show-leak-kinds=all \
-			--track-origins=yes \
-			--verbose \
-			--log-file=valgrind-out.txt \
-			./${NAME} ${STD_MAP}
-
--include $(SRCS:.c=.d)
-
-.PHONY:		val re all clean fclean bonus val_bonus
+.PHONY:		re all clean fclean bonus
