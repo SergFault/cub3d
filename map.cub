@@ -3,7 +3,7 @@ SO ./textures/redbrick.xpm
 WE ./textures/stone.xpm
 EA ./textures/wood.xpm
 
-F 060,000,000
+F 255,255,255
 C 090,060,060
 
         1111111111111111111111111
