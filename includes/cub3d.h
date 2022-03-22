@@ -223,6 +223,7 @@ void			move_right(t_dataset *set);
 unsigned int	shadows(unsigned int color, double y);
 int				rend_init(t_dataset *set);
 int				is_valid_color_pattern(char *str);
+void			space_check_skip(char **str);
 
 /*render*/
 void			render_image(t_dataset *set);

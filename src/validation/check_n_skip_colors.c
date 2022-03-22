@@ -66,11 +66,15 @@ static int	parse_color_data(t_list *line, t_dataset *set)
 	if (ft_strncmp(line_str, "F ", 2) == 0
 		&& is_valid_color_pattern(line_str + 2))
 	{
-		return (parse_colors(line_str + 2, set, FLOOR));
+		line_str++;
+		space_check_skip(&(line_str));
+		return (parse_colors(line_str, set, FLOOR));
 	}
 	else if (ft_strncmp(line_str, "C ", 2) == 0)
 	{
-		return (parse_colors(line_str + 2, set, CEIL));
+		line_str++;
+		space_check_skip(&(line_str));
+		return (parse_colors(line_str, set, CEIL));
 	}
 	return (0);
 }

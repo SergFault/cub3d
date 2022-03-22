@@ -37,19 +37,18 @@ static int	comma_check_skip(char **str)
 	return (0);
 }
 
-static int	space_check_skip(char **str)
+void	space_check_skip(char **str)
 {
 	while (*str && **str == ' ')
 	{
 		(*str)++;
 	}
-	return (1);
 }
 
 int	is_valid_color_pattern(char *str)
 {
-	if (space_check_skip(&str)
-		&& thee_digits_check_skip(&str)
+	space_check_skip(&str);
+	if (thee_digits_check_skip(&str)
 		&& comma_check_skip(&str)
 		&& thee_digits_check_skip(&str)
 		&& comma_check_skip(&str)
