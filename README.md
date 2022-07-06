@@ -1,10 +1,9 @@
 # so_long
 
 ### Description
-A basic graphic Linux project (with some manipulation can be launched at MacOS) on MiniLibX.
-Requires xorg, x11 and zlib.
+A graphic project on MiniLibX using raycasting (like old games from 90s) for macOS and Linux (separate branch).
 
-![Game visual](./assets/so_long.gif)
+![Game visual](./cub3d.png)
 
 ### How to launch (Linux)
     
